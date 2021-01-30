@@ -19,3 +19,4 @@ bot.on('channel_post', ctx => {
 });
 
 bot.launch();
+console.log('Bot has successfully started!');
