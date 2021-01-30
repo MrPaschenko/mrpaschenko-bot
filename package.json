@@ -3,5 +3,8 @@
   "version": "1.0.0",
   "dependencies": {
     "telegraf": "^4.0.2"
+  },
+  "devDependencies": {
+    "config": "^3.3.3"
   }
 }
