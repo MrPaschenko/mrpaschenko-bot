@@ -15,7 +15,7 @@ bot.on('message', ctx => {
 bot.on('channel_post', ctx => {
   const senderChatId = ctx.update.channel_post.sender_chat.id;
   if (senderChatId === parseFloat(config.get('channel'))) {
-    ctx.forwardMessage(config.get('me'));
+    ctx.forwardMessage(config.get('group'));
   }
 });
 
