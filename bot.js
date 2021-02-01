@@ -13,8 +13,9 @@ bot.on('message', ctx => {
 });
 
 bot.on('channel_post', ctx => {
-  if (ctx.update.channel_post.sender_chat.id === -1001341697220) {
-    ctx.forwardMessage(197415735);
+  const senderChatId = ctx.update.channel_post.sender_chat.id;
+  if (senderChatId === parseFloat(config.get('channel'))) {
+    ctx.forwardMessage(config.get('me'));
   }
 });
 
