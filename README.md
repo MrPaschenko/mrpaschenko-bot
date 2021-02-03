@@ -1,2 +1,2 @@
-# mrpaschenko-bot
-My small Telegram bot located at t.me/MrPaschenko_bot
+# MrPaschenko bot
+My small Telegram bot located at [https://t.me/MrPaschenko_bot](https://t.me/MrPaschenko_bot).
