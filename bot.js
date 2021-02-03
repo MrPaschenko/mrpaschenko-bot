@@ -5,6 +5,10 @@ const fs = require('fs');
 const config = require('config');
 const bot = new Telegraf(config.get('token'));
 
+bot.on('sticker', ctx => {
+  ctx.replyWithSticker(ctx.update.message.sticker.file_id);
+})
+
 bot.on('message', ctx => {
   const db = JSON.parse(fs.readFileSync('db.json').toString());
   db[ctx.message.from.id] = `@${ctx.message.from.username}`;
