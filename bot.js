@@ -7,12 +7,15 @@ const bot = new Telegraf(config.get('token'));
 const WolframAlphaAPI = require('wolfram-alpha-api');
 const waApi = WolframAlphaAPI(config.get('wolfram'));
 
-bot.command('gordon', ctx => {
-  const min = 1;
-  const max = fs.readdirSync('gordon').length;
-  const number = Math.round(Math.random() * (max - min) + min);
-  const path = `gordon/${number}.jpg`;
-  ctx.replyWithPhoto({ source: path });
+bot.start(ctx => {
+  ctx.reply('Привет!\n' +
+    'Посмотри список команд либо отправь /help, чтобы узнать, что я умею');
+});
+
+bot.help(ctx => {
+  ctx.reply('/wolfram - Wolfram Alpha запрос\n' +
+    '/gordon - Рандомная фотка Дмитрия Ильича\n' +
+    '/help - Список команд');
 });
 
 bot.command('wolfram', ctx => {
@@ -29,13 +32,39 @@ bot.command('wolfram', ctx => {
       ctx.reply(error.message);
     });
   }
-});
 
-bot.on('message', ctx => {
   const db = JSON.parse(fs.readFileSync('db.json').toString());
   db[ctx.message.from.id] = `@${ctx.message.from.username}`;
   db[ctx.message.chat.id] = ctx.message.chat.title;
   fs.writeFileSync('db.json', JSON.stringify(db));
+});
+
+bot.command('gordon', ctx => {
+  const min = 1;
+  const max = fs.readdirSync('gordon').length;
+  const number = Math.round(Math.random() * (max - min) + min);
+  const path = `gordon/${number}.jpg`;
+  ctx.replyWithPhoto({ source: path });
+
+  const db = JSON.parse(fs.readFileSync('db.json').toString());
+  db[ctx.message.from.id] = `@${ctx.message.from.username}`;
+  db[ctx.message.chat.id] = ctx.message.chat.title;
+  fs.writeFileSync('db.json', JSON.stringify(db));
+});
+
+bot.on('message', ctx => {
+  if (ctx.message.text.includes('/')) {
+    ctx.reply('Я не знаю такой команды');
+    const db = JSON.parse(fs.readFileSync('db.json').toString());
+    db[ctx.message.from.id] = `@${ctx.message.from.username}`;
+    db[ctx.message.chat.id] = ctx.message.chat.title;
+    fs.writeFileSync('db.json', JSON.stringify(db));
+  } else {
+    const db = JSON.parse(fs.readFileSync('db.json').toString());
+    db[ctx.message.from.id] = `@${ctx.message.from.username}`;
+    db[ctx.message.chat.id] = ctx.message.chat.title;
+    fs.writeFileSync('db.json', JSON.stringify(db));
+  }
 });
 
 bot.on('channel_post', ctx => {
