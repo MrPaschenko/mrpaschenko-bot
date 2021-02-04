@@ -32,11 +32,6 @@ bot.command('wolfram', ctx => {
       ctx.reply(error.message);
     });
   }
-
-  const db = JSON.parse(fs.readFileSync('db.json').toString());
-  db[ctx.message.from.id] = `@${ctx.message.from.username}`;
-  db[ctx.message.chat.id] = ctx.message.chat.title;
-  fs.writeFileSync('db.json', JSON.stringify(db));
 });
 
 bot.command('gordon', ctx => {
@@ -45,25 +40,11 @@ bot.command('gordon', ctx => {
   const number = Math.round(Math.random() * (max - min) + min);
   const path = `gordon/${number}.jpg`;
   ctx.replyWithPhoto({ source: path });
-
-  const db = JSON.parse(fs.readFileSync('db.json').toString());
-  db[ctx.message.from.id] = `@${ctx.message.from.username}`;
-  db[ctx.message.chat.id] = ctx.message.chat.title;
-  fs.writeFileSync('db.json', JSON.stringify(db));
 });
 
 bot.on('message', ctx => {
   if (ctx.message.text.includes('/')) {
     ctx.reply('Я не знаю такой команды');
-    const db = JSON.parse(fs.readFileSync('db.json').toString());
-    db[ctx.message.from.id] = `@${ctx.message.from.username}`;
-    db[ctx.message.chat.id] = ctx.message.chat.title;
-    fs.writeFileSync('db.json', JSON.stringify(db));
-  } else {
-    const db = JSON.parse(fs.readFileSync('db.json').toString());
-    db[ctx.message.from.id] = `@${ctx.message.from.username}`;
-    db[ctx.message.chat.id] = ctx.message.chat.title;
-    fs.writeFileSync('db.json', JSON.stringify(db));
   }
 });
 
