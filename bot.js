@@ -22,12 +22,18 @@ bot.command('wolfram', ctx => {
   const inputArray = ctx.message.text.split(' ');
   inputArray.shift();
   const input = inputArray.join(' ');
-
-  if (!input) {
-    ctx.reply('Введи запрос после команды');
+  if (!input && ctx.message.reply_to_message) {
+    waApi.getShort(ctx.message.reply_to_message.text).then(result => {
+      ctx.reply(result);
+    }).catch(error => {
+      ctx.reply(error.message);
+    });
+  } else if (!input) {
+    ctx.reply('Введи запрос после команды или ' +
+      'отправь команду в ответ на сообщение');
   } else {
-    waApi.getShort(input).then(input => {
-      ctx.reply(input);
+    waApi.getShort(input).then(result => {
+      ctx.reply(result);
     }).catch(error => {
       ctx.reply(error.message);
     });
@@ -42,16 +48,16 @@ bot.command('gordon', ctx => {
   ctx.replyWithPhoto({ source: path });
 });
 
-bot.on('message', ctx => {
-  if (ctx.message.text.includes('/')) {
-    ctx.reply('Я не знаю такой команды');
-  }
-});
-
 bot.on('channel_post', ctx => {
   const senderChatId = ctx.update.channel_post.sender_chat.id;
+  // const text = ctx.update.channel_post.text;
   if (senderChatId === parseFloat(config.get('channel'))) {
     ctx.forwardMessage(config.get('group'));
+
+    // ctx.forwardMessage(config.get('me'));
+    // if (text.includes('Українська') || text.includes('Архітектура')) {
+    //
+    // }
   }
 });
 
