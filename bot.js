@@ -57,11 +57,6 @@ bot.on('channel_post', ctx => {
   // const text = ctx.update.channel_post.text;
   if (senderChatId === parseFloat(config.get('channel'))) {
     ctx.forwardMessage(config.get('group'));
-
-    // ctx.forwardMessage(config.get('me'));
-    // if (text.includes('Українська') || text.includes('Архітектура')) {
-    //
-    // }
   }
 });
 
