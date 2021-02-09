@@ -48,6 +48,10 @@ bot.command('gordon', ctx => {
   ctx.replyWithPhoto({ source: path });
 });
 
+bot.command('f', ctx => {
+  ctx.reply('F');
+});
+
 bot.on('channel_post', ctx => {
   const senderChatId = ctx.update.channel_post.sender_chat.id;
   // const text = ctx.update.channel_post.text;
