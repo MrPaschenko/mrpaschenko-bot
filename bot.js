@@ -51,9 +51,9 @@ bot.command('wa_simple', async ctx => {
   async function wa_simple(request) {
     try {
       const result = await waApi.getSimple(request);
-      await base64ToImage(result, './', { 'fileName': 'out', 'type': 'gif' });
+      await base64ToImage(result, './', { 'fileName': 'out', 'type': 'jpg' });
       setTimeout(async () => {
-        await ctx.replyWithAnimation({ source: './out.gif' });
+        await ctx.replyWithPhoto({ source: './out.jpg' });
       }, 3000);
     } catch (err) {
       await ctx.reply(err.message);
