@@ -1,11 +1,10 @@
 'use strict';
-
-const config = require('config');
+const base64ToImage = require('base64-to-image');
 const fetch = require('node-fetch');
 const { Telegraf } = require('telegraf');
 const bot = new Telegraf(config.get('token'));
 const WolframAlphaAPI = require('wolfram-alpha-api');
-const waApi = WolframAlphaAPI(config.get('wolfram'));
+const waApi = new WolframAlphaAPI(config.get('wolfram'));
 
 bot.start(ctx => {
   ctx.reply('Привет!\n' +
@@ -22,12 +21,14 @@ bot.command('wa', ctx => {
   inputArray.shift();
   const input = inputArray.join(' ');
 
-  function wa(request) {
-    waApi.getShort(request).then(result => {
-      ctx.reply(result);
-    }).catch(error => {
-      ctx.reply(error.message);
-    });
+  async function wa(request) {
+	try{
+		const result = await waApi.getShort(request);
+		await ctx.reply(result);
+	}
+	catch(err){
+		await ctx.reply(err.message);
+	}
   }
 
   if (!input && ctx.message.reply_to_message) {
@@ -41,6 +42,34 @@ bot.command('wa', ctx => {
   }
 });
 
+bot.command('wa_simple', ctx => {
+  const inputArray = ctx.message.text.split(' ');
+  inputArray.shift();
+  const input = inputArray.join(' ');
+
+  async function wa(request) {
+	try{
+		const result = await waApi.getSimple(request);
+		await base64ToImage(result, './', {'fileName': 'out', 'type':'gif'});
+		setTimeout(async ()=>{
+			await ctx.replyWithAnimation({ source: './out.gif' })
+		}, 3000)
+	}
+	catch(err){
+		await ctx.reply(err.message);
+	}
+  }
+
+  if (!input && ctx.message.reply_to_message) {
+    const request = ctx.message.reply_to_message.text;
+    wa(request);
+  } else if (!input) {
+    ctx.reply('Введи запрос после команды или ' +
+      'отправь команду в ответ на сообщение');
+  } else {
+    wa(input);
+  }
+});
 bot.command('ud', ctx => {
   const inputArray = ctx.message.text.split(' ');
   inputArray.shift();
