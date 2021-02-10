@@ -1,9 +1,11 @@
 'use strict';
-const base64ToImage = require('base64-to-image');
+
+const config = require('request')
 const fetch = require('node-fetch');
 const { Telegraf } = require('telegraf');
-const bot = new Telegraf(config.get('token'));
+const base64ToImage = require('base64-to-image');
 const WolframAlphaAPI = require('wolfram-alpha-api');
+const bot = new Telegraf(config.get('token'));
 const waApi = new WolframAlphaAPI(config.get('wolfram'));
 
 bot.start(ctx => {
@@ -70,6 +72,7 @@ bot.command('wa_simple', ctx => {
     await wa_simple(input);
   }
 });
+
 bot.command('ud', ctx => {
   const inputArray = ctx.message.text.split(' ');
   inputArray.shift();
