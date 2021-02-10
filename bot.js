@@ -81,7 +81,6 @@ bot.command('ping', ctx => {
 
 bot.on('channel_post', ctx => {
   const senderChatId = ctx.update.channel_post.sender_chat.id;
-  // const text = ctx.update.channel_post.text;
   if (senderChatId === parseFloat(config.get('channel'))) {
     ctx.forwardMessage(config.get('group'));
   }
