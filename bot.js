@@ -1,6 +1,6 @@
 'use strict';
 
-const fs = require('fs');
+// const fs = require('fs');
 const config = require('config');
 const { Telegraf } = require('telegraf');
 const bot = new Telegraf(config.get('token'));
@@ -14,7 +14,6 @@ bot.start(ctx => {
 
 bot.help(ctx => {
   ctx.reply('/wolfram - Wolfram Alpha запрос\n' +
-    '/gordon - Рандомная фотка Дмитрия Ильича\n' +
     '/help - Список команд');
 });
 
@@ -38,14 +37,6 @@ bot.command('wolfram', ctx => {
       ctx.reply(error.message);
     });
   }
-});
-
-bot.command('gordon', ctx => {
-  const min = 1;
-  const max = fs.readdirSync('gordon').length;
-  const number = Math.round(Math.random() * (max - min) + min);
-  const path = `gordon/${number}.jpg`;
-  ctx.replyWithPhoto({ source: path });
 });
 
 bot.command('f', ctx => {
