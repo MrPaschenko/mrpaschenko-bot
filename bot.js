@@ -48,13 +48,15 @@ bot.command('wa_simple', async ctx => {
   inputArray.shift();
   const input = inputArray.join(' ');
 
-  async function wa_simple(request) {
+  async function wa(request) {
     try {
-      const result = await waApi.getSimple(request);
-      await base64ToImage(result, './', { 'fileName': 'out', 'type': 'jpg' });
-      setTimeout(async () => {
-        await ctx.replyWithPhoto({ source: './out.jpg' });
-      }, 3000);
+      try {
+        await ctx.replyWithDocument({ source: `./pics/${input}.jpg` });
+      } catch {
+        const result = await waApi.getSimple(request);
+        await base64ToImage(result, './pics/', { 'fileName': `${input}`, 'type': 'jpg' });
+        await ctx.replyWithDocument({ source: `./pics/${input}.jpg` });
+      }
     } catch (err) {
       await ctx.reply(err.message);
     }
@@ -62,31 +64,13 @@ bot.command('wa_simple', async ctx => {
 
   if (!input && ctx.message.reply_to_message) {
     const request = ctx.message.reply_to_message.text;
-    await wa_simple(request);
+    await wa(request);
   } else if (!input) {
     ctx.reply('Введи запрос после команды или ' +
       'отправь команду в ответ на сообщение');
   } else {
-    await wa_simple(input);
+    await wa(input);
   }
-});
-
-bot.command('wa_pic', ctx => {
-  const inputArray = ctx.message.text.split(' ');
-  inputArray.shift();
-  const input = inputArray.join(' ');
-  waApi.getSimple(input).then(base64 => {
-    async function base64ToPic() {
-      base64ToImage(base64, './pic/', { 'fileName': `${input}`, 'type': 'jpg' });
-    }
-    base64ToPic().then(() => {
-      console.log('done');
-      ctx.replyWithPhoto({ source: `./pic/${input}.jpg` })
-        .catch(e => {
-          ctx.reply(e.message);
-        });
-    });
-  });
 });
 
 bot.command('ud', ctx => {
