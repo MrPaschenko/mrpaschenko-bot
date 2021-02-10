@@ -71,6 +71,24 @@ bot.command('wa_simple', ctx => {
   }
 });
 
+bot.command('wa_pic', ctx => {
+  const inputArray = ctx.message.text.split(' ');
+  inputArray.shift();
+  const input = inputArray.join(' ');
+  waApi.getSimple(input).then(base64 => {
+    async function base64ToPic() {
+      base64ToImage(base64, './pic/', { 'fileName': `${input}`, 'type': 'jpg' });
+    }
+    base64ToPic().then(() => {
+      console.log('done');
+      ctx.replyWithPhoto({ source: `./pic/${input}.jpg` })
+        .catch(e => {
+          ctx.reply(e.message);
+        });
+    });
+  });
+});
+
 bot.command('ud', ctx => {
   const inputArray = ctx.message.text.split(' ');
   inputArray.shift();
