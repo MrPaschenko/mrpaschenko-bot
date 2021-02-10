@@ -2,7 +2,6 @@
 
 // const fs = require('fs');
 const config = require('config');
-const request = require('request');
 const fetch = require('node-fetch');
 const { Telegraf } = require('telegraf');
 const bot = new Telegraf(config.get('token'));
