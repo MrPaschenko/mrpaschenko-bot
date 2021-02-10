@@ -54,7 +54,8 @@ bot.command('wa_simple', async ctx => {
         await ctx.replyWithDocument({ source: `./pics/${input}.jpg` });
       } catch {
         const result = await waApi.getSimple(request);
-        await base64ToImage(result, './pics/', { 'fileName': `${input}`, 'type': 'jpg' });
+        const picProperties = { 'fileName': `${input}`, 'type': 'jpg' };
+        await base64ToImage(result, './pics/', picProperties);
         await ctx.replyWithDocument({ source: `./pics/${input}.jpg` });
       }
     } catch (err) {
@@ -118,5 +119,4 @@ bot.on('channel_post', ctx => {
   }
 });
 
-bot.launch();
-console.log('Bot has successfully started!');
+bot.launch().then(() => console.log('Bot has successfully started!'));
