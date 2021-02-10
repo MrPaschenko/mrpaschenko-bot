@@ -33,12 +33,12 @@ bot.command('wa', ctx => {
 
   if (!input && ctx.message.reply_to_message) {
     const request = ctx.message.reply_to_message.text;
-    wa(request);
+    await wa(request);
   } else if (!input) {
     ctx.reply('Введи запрос после команды или ' +
       'отправь команду в ответ на сообщение');
   } else {
-    wa(input);
+    await wa(input);
   }
 });
 
@@ -47,7 +47,7 @@ bot.command('wa_simple', ctx => {
   inputArray.shift();
   const input = inputArray.join(' ');
 
-  async function wa(request) {
+  async function wa_simple(request) {
 	try{
 		const result = await waApi.getSimple(request);
 		await base64ToImage(result, './', {'fileName': 'out', 'type':'gif'});
@@ -62,12 +62,12 @@ bot.command('wa_simple', ctx => {
 
   if (!input && ctx.message.reply_to_message) {
     const request = ctx.message.reply_to_message.text;
-    wa(request);
+    await wa_simple(request);
   } else if (!input) {
     ctx.reply('Введи запрос после команды или ' +
       'отправь команду в ответ на сообщение');
   } else {
-    wa(input);
+    await wa_simple(input);
   }
 });
 bot.command('ud', ctx => {
