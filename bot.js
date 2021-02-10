@@ -1,6 +1,6 @@
 'use strict';
 
-const config = require('config')
+const config = require('config');
 const fetch = require('node-fetch');
 const { Telegraf } = require('telegraf');
 const base64ToImage = require('base64-to-image');
@@ -24,13 +24,12 @@ bot.command('wa', ctx => {
   const input = inputArray.join(' ');
 
   async function wa(request) {
-	try{
-		const result = await waApi.getShort(request);
-		await ctx.reply(result);
-	}
-	catch(err){
-		await ctx.reply(err.message);
-	}
+    try {
+      const result = await waApi.getShort(request);
+      await ctx.reply(result);
+    } catch (err) {
+      await ctx.reply(err.message);
+    }
   }
 
   if (!input && ctx.message.reply_to_message) {
@@ -50,16 +49,15 @@ bot.command('wa_simple', ctx => {
   const input = inputArray.join(' ');
 
   async function wa_simple(request) {
-	try{
-		const result = await waApi.getSimple(request);
-		await base64ToImage(result, './', {'fileName': 'out', 'type':'gif'});
-		setTimeout(async ()=>{
-			await ctx.replyWithAnimation({ source: './out.gif' })
-		}, 3000)
-	}
-	catch(err){
-		await ctx.reply(err.message);
-	}
+    try {
+      const result = await waApi.getSimple(request);
+      await base64ToImage(result, './', { 'fileName': 'out', 'type': 'gif' });
+      setTimeout(async () => {
+        await ctx.replyWithAnimation({ source: './out.gif' });
+      }, 3000);
+    } catch (err) {
+      await ctx.reply(err.message);
+    }
   }
 
   if (!input && ctx.message.reply_to_message) {
