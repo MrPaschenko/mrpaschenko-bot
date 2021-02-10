@@ -13,11 +13,11 @@ bot.start(ctx => {
 });
 
 bot.help(ctx => {
-  ctx.reply('/wolfram - Wolfram Alpha запрос\n' +
+  ctx.reply('/wa - Wolfram Alpha запрос\n' +
     '/help - Список команд');
 });
 
-bot.command('wolfram', ctx => {
+bot.command('wa', ctx => {
   const inputArray = ctx.message.text.split(' ');
   inputArray.shift();
   const input = inputArray.join(' ');
@@ -37,6 +37,10 @@ bot.command('wolfram', ctx => {
       ctx.reply(error.message);
     });
   }
+});
+
+bot.command('ud', ctx => {
+  // http://api.urbandictionary.com/v0/define?term=
 });
 
 bot.command('f', ctx => {
