@@ -1,6 +1,6 @@
 'use strict';
 
-const config = require('request')
+const config = require('config')
 const fetch = require('node-fetch');
 const { Telegraf } = require('telegraf');
 const base64ToImage = require('base64-to-image');
@@ -35,12 +35,12 @@ bot.command('wa', ctx => {
 
   if (!input && ctx.message.reply_to_message) {
     const request = ctx.message.reply_to_message.text;
-    await wa(request);
+    wa(request);
   } else if (!input) {
     ctx.reply('Введи запрос после команды или ' +
       'отправь команду в ответ на сообщение');
   } else {
-    await wa(input);
+    wa(input);
   }
 });
 
@@ -64,12 +64,12 @@ bot.command('wa_simple', ctx => {
 
   if (!input && ctx.message.reply_to_message) {
     const request = ctx.message.reply_to_message.text;
-    await wa_simple(request);
+    wa_simple(request);
   } else if (!input) {
     ctx.reply('Введи запрос после команды или ' +
       'отправь команду в ответ на сообщение');
   } else {
-    await wa_simple(input);
+    wa_simple(input);
   }
 });
 
