@@ -14,15 +14,15 @@ $ node bot.js
 ## Commands:
 ### Request to Wolfram|Alpha with simple answer
 ```
-/wa <requst>
+/wa <request>
 ```
 ***
 ### Same with full answer
 ```
-/wa_simple <requst>
+/wa_simple <request>
 ```
 ***
 ### Word definition from Urban Dictionary
 ```
-/ud <requst>
+/ud <request>
 ```
