@@ -1,6 +1,5 @@
 'use strict';
 
-// const fs = require('fs');
 const config = require('config');
 const fetch = require('node-fetch');
 const { Telegraf } = require('telegraf');
