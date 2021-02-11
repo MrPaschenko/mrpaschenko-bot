@@ -6,7 +6,7 @@
 ```bash
 $ npm install package-lock.json
 ```
-###Making a configuration file
+### Making a configuration file
 Configuration file should be located at `config` folder and named as `default.json`:
 ```
 {
