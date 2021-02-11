@@ -31,7 +31,21 @@ bot.command('wa', async ctx => {
       const result = await waApi.getShort(request);
       await ctx.reply(result);
     } catch (err) {
-      await ctx.reply(err.message);
+      if (err.message.includes('No short answer available')) {
+        try {
+          await ctx.reply('Короткий вариант недоступен, кидаю фотку');
+          try {
+            await ctx.replyWithDocument({ source: `./pics/${input}.jpg` });
+          } catch {
+            const result = await waApi.getSimple(request); // base64
+            const picProperties = { 'fileName': `${input}`, 'type': 'jpg' };
+            await base64ToImage(result, './pics/', picProperties);
+            await ctx.replyWithDocument({ source: `./pics/${input}.jpg` });
+          }
+        } catch (err) {
+          await ctx.reply(err.message);
+        }
+      } else await ctx.reply(err.message);
     }
   }
 
@@ -51,7 +65,7 @@ bot.command('wa_full', async ctx => {
   inputArray.shift();
   const input = inputArray.join(' ');
 
-  async function wa(request) {
+  async function waFull(request) {
     try {
       try {
         await ctx.replyWithDocument({ source: `./pics/${input}.jpg` });
@@ -68,12 +82,12 @@ bot.command('wa_full', async ctx => {
 
   if (!input && ctx.message.reply_to_message) {
     const request = ctx.message.reply_to_message.text;
-    await wa(request);
+    await waFull(request);
   } else if (!input) {
     ctx.reply('Введи запрос после команды или ' +
       'отправь команду в ответ на сообщение');
   } else {
-    await wa(input);
+    await waFull(input);
   }
 });
 
