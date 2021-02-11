@@ -107,7 +107,7 @@ bot.command('ud', ctx => {
   }
 });
 
-bot.hears(/[fFфФ]/, ctx => {
+bot.hears(/^[fFфФ]$/, ctx => {
   ctx.reply('F');
 });
 
