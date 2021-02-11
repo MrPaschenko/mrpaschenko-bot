@@ -6,6 +6,15 @@
 ```bash
 $ npm install package-lock.json
 ```
+###Making a configuration file
+Configuration file should be located at `config` folder and named as `default.json`:
+```
+{
+  "token" : "<telegram-bot>",
+  "wolfram" : "<wolfram-api>"
+}
+
+```
 ### Starting script: 
 ```bash
 $ node bot.js
@@ -17,12 +26,13 @@ $ node bot.js
 /wa <request>
 ```
 ***
-### Same with full answer
+### Same but full answer with picture
 ```
-/wa_simple <request>
+/wa_full <request>
 ```
 ***
 ### Word definition from Urban Dictionary
 ```
 /ud <request>
 ```
+_You can also reply to message to make a request with its content_

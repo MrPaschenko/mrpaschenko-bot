@@ -5,6 +5,7 @@ const fetch = require('node-fetch');
 const { Telegraf } = require('telegraf');
 const base64ToImage = require('base64-to-image');
 const WolframAlphaAPI = require('wolfram-alpha-api');
+
 const bot = new Telegraf(config.get('token'));
 const waApi = new WolframAlphaAPI(config.get('wolfram'));
 
@@ -15,6 +16,8 @@ bot.start(ctx => {
 
 bot.help(ctx => {
   ctx.reply('/wa - Wolfram Alpha запрос\n' +
+    '/wa_full - То же самое, но с полным ответом картинкой\n' +
+    '/ud - Urban Dictionary запрос\n' +
     '/help - Список команд');
 });
 
@@ -43,7 +46,7 @@ bot.command('wa', async ctx => {
   }
 });
 
-bot.command('wa_simple', async ctx => {
+bot.command('wa_full', async ctx => {
   const inputArray = ctx.message.text.split(' ');
   inputArray.shift();
   const input = inputArray.join(' ');
@@ -53,7 +56,7 @@ bot.command('wa_simple', async ctx => {
       try {
         await ctx.replyWithDocument({ source: `./pics/${input}.jpg` });
       } catch {
-        const result = await waApi.getSimple(request);
+        const result = await waApi.getSimple(request); // base64
         const picProperties = { 'fileName': `${input}`, 'type': 'jpg' };
         await base64ToImage(result, './pics/', picProperties);
         await ctx.replyWithDocument({ source: `./pics/${input}.jpg` });
@@ -104,7 +107,7 @@ bot.command('ud', ctx => {
   }
 });
 
-bot.command('f', ctx => {
+bot.hears(/[fFфФ]/, ctx => {
   ctx.reply('F');
 });
 
@@ -112,6 +115,7 @@ bot.command('ping', ctx => {
   ctx.reply('i\'m here');
 });
 
+// Для пересылки сообщений с ссылками на пары
 bot.on('channel_post', ctx => {
   const senderChatId = ctx.update.channel_post.sender_chat.id;
   if (senderChatId === parseFloat(config.get('channel'))) {
