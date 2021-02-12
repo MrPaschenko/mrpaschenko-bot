@@ -19,7 +19,8 @@ bot.help(ctx => {
   ctx.reply('/wa - Wolfram Alpha запрос\n' +
     '/wa_full - То же самое, но с полным ответом картинкой\n' +
     '/ud - Urban Dictionary запрос\n' +
-    '/help - Список команд');
+    '/help - Список команд\n' +
+    '/donate - Кинуть автору на хостинг)');
 });
 
 bot.command('wa', async ctx => {
@@ -129,6 +130,11 @@ bot.command('ping', ctx => {
   ctx.reply('i\'m here');
 });
 
+bot.command('donate', ctx => {
+  ctx.reply('4149497110283761\n' +
+    'https://send.monobank.ua/4Ab8h73dNs');
+});
+
 const vowelsRegex = /[аеёиоуыэюяії]/ig;
 
 const syllableCount = text => syllabify(text)
@@ -143,8 +149,6 @@ const syllableCount = text => syllabify(text)
 
 const getHaiku = text => {
   if (syllableCount(text) !== 17) return false;
-
-  // TODO: переделывать числа в слова, чтобы считать слоги в них
   if (/\d/.test(text)) return false;
 
   const words = text.replace(/\s+/g, ' ').split(' ');
