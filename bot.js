@@ -50,8 +50,7 @@ bot.command('wa', async ctx => {
   }
 
   if (!input && ctx.message.reply_to_message) {
-    const request = ctx.message.reply_to_message.text;
-    await wa(request);
+    await wa(ctx.message.reply_to_message.text);
   } else if (!input) {
     ctx.reply('Введи запрос после команды или ' +
       'отправь команду в ответ на сообщение');
