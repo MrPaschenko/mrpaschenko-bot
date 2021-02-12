@@ -35,12 +35,12 @@ bot.command('wa', async ctx => {
         try {
           await ctx.reply('Короткий вариант недоступен, кидаю фотку');
           try {
-            await ctx.replyWithDocument({ source: `./pics/${input}.jpg` });
+            await ctx.replyWithDocument({ source: `./pics/${request}.jpg` });
           } catch {
             const result = await waApi.getSimple(request); // base64
-            const picProperties = { 'fileName': `${input}`, 'type': 'jpg' };
+            const picProperties = { 'fileName': `${request}`, 'type': 'jpg' };
             await base64ToImage(result, './pics/', picProperties);
-            await ctx.replyWithDocument({ source: `./pics/${input}.jpg` });
+            await ctx.replyWithDocument({ source: `./pics/${request}.jpg` });
           }
         } catch (err) {
           await ctx.reply(err.message);
@@ -68,12 +68,12 @@ bot.command('wa_full', async ctx => {
   async function waFull(request) {
     try {
       try {
-        await ctx.replyWithDocument({ source: `./pics/${input}.jpg` });
+        await ctx.replyWithDocument({ source: `./pics/${request}.jpg` });
       } catch {
         const result = await waApi.getSimple(request); // base64
-        const picProperties = { 'fileName': `${input}`, 'type': 'jpg' };
+        const picProperties = { 'fileName': `${request}`, 'type': 'jpg' };
         await base64ToImage(result, './pics/', picProperties);
-        await ctx.replyWithDocument({ source: `./pics/${input}.jpg` });
+        await ctx.replyWithDocument({ source: `./pics/${request}.jpg` });
       }
     } catch (err) {
       await ctx.reply(err.message);
