@@ -3,6 +3,7 @@
 const config = require('config');
 const fetch = require('node-fetch');
 const { Telegraf } = require('telegraf');
+const { syllabify } = require('syllables-ru');
 const base64ToImage = require('base64-to-image');
 const WolframAlphaAPI = require('wolfram-alpha-api');
 
@@ -120,12 +121,61 @@ bot.command('ud', ctx => {
   }
 });
 
-bot.hears(/^[fFфФ]$/, ctx => {
+bot.hears(/^[fф]$/i, ctx => {
   ctx.reply('F');
 });
 
 bot.command('ping', ctx => {
   ctx.reply('i\'m here');
+});
+
+const vowelsRegex = /[аеёиоуыэюяії]/ig;
+
+const syllableCount = text => syllabify(text)
+  .replace(/\s+/g, ' ')
+  .split(' ')
+  .reduce((acc, v) => acc + (
+    v.split('·').length === 1 ?
+    // Пропускаем предлоги и т.п. без гласных
+      (v.match(vowelsRegex) ? 1 : 0) :
+      v.split('·').length
+  ), 0);
+
+const getHaiku = text => {
+  if (syllableCount(text) !== 17) return false;
+
+  // TODO: переделывать числа в слова, чтобы считать слоги в них
+  if (/\d/.test(text)) return false;
+
+  const words = text.replace(/\s+/g, ' ').split(' ');
+  const haiku = [[], [], []];
+  let paragraph = 0;
+
+  for (const word of words) {
+    haiku[paragraph].push(word);
+
+    const paragraphSyllableCount = syllableCount(haiku[paragraph].join(' '));
+    const maxSyllables = [5, 7, 5];
+
+    if (paragraphSyllableCount === maxSyllables[paragraph]) {
+      paragraph++;
+      continue;
+    }
+
+    if (paragraphSyllableCount > maxSyllables[paragraph]) {
+      return false;
+    }
+  }
+
+  return haiku.map(line => line.join(' ')).join('\n');
+};
+
+bot.on('text', ctx => {
+  const haiku = getHaiku(ctx.message.text);
+  const firstName = ctx.message.from.first_name || '';
+  const lastName = ctx.message.from.last_name || '';
+  const suffix = `— ${firstName} ${lastName}`;
+  if (haiku) ctx.reply(`${haiku}\n\n${suffix}`);
 });
 
 // Для пересылки сообщений с ссылками на пары
