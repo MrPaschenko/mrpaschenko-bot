@@ -4,7 +4,6 @@ const config = require('config');
 const fetch = require('node-fetch');
 const { Telegraf } = require('telegraf');
 const { syllabify } = require('syllables-ru');
-const base64ToImage = require('base64-to-image');
 const WolframAlphaAPI = require('wolfram-alpha-api');
 
 const bot = new Telegraf(config.get('token'));
@@ -36,14 +35,9 @@ bot.command('wa', async ctx => {
       if (err.message.includes('No short answer available')) {
         try {
           await ctx.reply('Короткий вариант недоступен, кидаю фотку');
-          try {
-            await ctx.replyWithDocument({ source: `./pics/${request}.jpg` });
-          } catch {
-            const result = await waApi.getSimple(request); // base64
-            const picProperties = { 'fileName': `${request}`, 'type': 'jpg' };
-            await base64ToImage(result, './pics/', picProperties);
-            await ctx.replyWithDocument({ source: `./pics/${request}.jpg` });
-          }
+          const result = await waApi.getSimple(request); // URI (with suffix)
+          const base64 = result.toString().replace(/^.{22}/, '');
+          await ctx.replyWithPhoto({ source: Buffer.from(base64, 'base64') });
         } catch (err) {
           await ctx.reply(err.message);
         }
@@ -68,14 +62,9 @@ bot.command('wa_full', async ctx => {
 
   async function waFull(request) {
     try {
-      try {
-        await ctx.replyWithDocument({ source: `./pics/${request}.jpg` });
-      } catch {
-        const result = await waApi.getSimple(request); // base64
-        const picProperties = { 'fileName': `${request}`, 'type': 'jpg' };
-        await base64ToImage(result, './pics/', picProperties);
-        await ctx.replyWithDocument({ source: `./pics/${request}.jpg` });
-      }
+      const result = await waApi.getSimple(request); // URI (with suffix)
+      const base64 = result.toString().replace(/^.{22}/, '');
+      await ctx.replyWithPhoto({ source: Buffer.from(base64, 'base64') });
     } catch (err) {
       await ctx.reply(err.message);
     }
