@@ -111,17 +111,29 @@ bot.command('ud', ctx => {
   }
 });
 
+bot.command('donate', ctx => {
+  ctx.reply('5168752000128242\n' +
+    '5375414107276932\n' +
+    'https://send.monobank.ua/4Ab8h73dNs');
+});
+
 bot.hears(/^[fф]$/i, ctx => {
   ctx.reply('F');
 });
 
 bot.command('ping', ctx => {
   ctx.reply('i\'m here');
+  console.log(ctx.message.chat);
 });
 
-bot.command('donate', ctx => {
-  ctx.reply('4149497110283761\n' +
-    'https://send.monobank.ua/4Ab8h73dNs');
+bot.command('send', ctx => {
+  const inputArray = ctx.message.text.split(' ');
+  inputArray.shift();
+  const input = inputArray.join(' ');
+  if (ctx.message.chat.id === config.get('me')) {
+    ctx.telegram.sendMessage(config.get('group'), input)
+      .catch(e => { ctx.reply(e.message); });
+  }
 });
 
 const vowelsRegex = /[аеёиоуыэюяії]/ig;
