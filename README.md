@@ -36,6 +36,3 @@ $ node bot.js
 /ud <request>
 ```
 _You can also reply to message to make a request with its content_
-## Known bugs
-* Unable to make a Wolfram Alpha full request with symbols like 
-  `<`, `>`, `:`, `"`, `/`, `\`, `|`, `?`, `*`, etc.
