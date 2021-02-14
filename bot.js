@@ -9,8 +9,6 @@ require('dotenv').config();
 const bot = new Telegraf(process.env.token);
 const waApi = new WolframAlphaAPI(process.env.wolfram);
 
-
-
 bot.start(ctx => {
   ctx.reply('Привет!\n' +
     'Посмотри список команд либо отправь /help, чтобы узнать, что я умею');
@@ -114,9 +112,7 @@ bot.command('ud', ctx => {
 });
 
 bot.command('donate', ctx => {
-  ctx.reply('5168752000128242\n' +
-    '5375414107276932\n' +
-    'https://send.monobank.ua/4Ab8h73dNs');
+  ctx.reply('4149497110283761');
 });
 
 bot.hears(/^[fф]$/i, ctx => {
