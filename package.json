@@ -2,17 +2,11 @@
   "name": "mrpaschenko-bot",
   "version": "1.0.0",
   "dependencies": {
-    "base64-to-image": "^1.0.2",
     "node-fetch": "^2.6.1",
-    "package-lock.json": "^1.0.0",
-    "telegraf": "^4.0.2"
+    "telegraf": "^4.0.3"
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
-    "request": "^2.88.2",
     "wolfram-alpha-api": "https://products.wolframalpha.com/api/libraries/javascript/wolfram-alpha-api-1.0.0-rc.1.tgz"
-  },
-  "scripts": {
-    "start": "node bot.js"
   }
 }
