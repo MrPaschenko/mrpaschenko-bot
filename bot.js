@@ -1,13 +1,14 @@
 'use strict';
 
-const config = require('config');
 const fetch = require('node-fetch');
 const { Telegraf } = require('telegraf');
 const { syllabify } = require('syllables-ru');
 const WolframAlphaAPI = require('wolfram-alpha-api');
 
-const bot = new Telegraf(config.get('token'));
-const waApi = new WolframAlphaAPI(config.get('wolfram'));
+require('dotenv').config();
+
+const bot = new Telegraf(process.env.token);
+const waApi = new WolframAlphaAPI(process.env.wolfram);
 
 bot.start(ctx => {
   ctx.reply('Привет!\n' +
@@ -130,8 +131,8 @@ bot.command('send', ctx => {
   const inputArray = ctx.message.text.split(' ');
   inputArray.shift();
   const input = inputArray.join(' ');
-  if (ctx.message.chat.id === config.get('me')) {
-    ctx.telegram.sendMessage(config.get('group'), input)
+  if (ctx.message.chat.id === parseInt(process.env.me)) {
+    ctx.telegram.sendMessage(process.env.group, input)
       .catch(e => { ctx.reply(e.message); });
   }
 });
@@ -186,8 +187,8 @@ bot.on('text', ctx => {
 // Для пересылки сообщений с ссылками на пары
 bot.on('channel_post', ctx => {
   const senderChatId = ctx.update.channel_post.sender_chat.id;
-  if (senderChatId === parseFloat(config.get('channel'))) {
-    ctx.forwardMessage(config.get('group'));
+  if (senderChatId === parseInt(process.env.channel)) {
+    ctx.forwardMessage(process.env.group);
   }
 });
 
