@@ -108,31 +108,29 @@ bot.command('get_schedule', async ctx => {
   await ctx.reply(message);
 });
 
-bot.command('ud', ctx => {
+bot.command('ud', async ctx => {
   const input = ctx.message.text.split(' ').slice(1).join(' ');
 
-  function ud(url) {
-    fetch(url)
-      .then(res => res.json())
-      .then(json => {
-        ctx.replyWithMarkdown('*Определение:*\n' +
-          `${json.list[0].definition}\n` +
-          '\n*Пример использования:*\n' +
-          `${json.list[0].example}`);
-      }).catch(() => {
-        ctx.reply('Ничего не найдено');
-      });
+  async function ud(url) {
+	try{
+		const result = (await fetch(url)).json();
+		ctx.replyWithMarkdown('*Определение:*\n' + `${result.list[0].definition}\n` + '\n*Пример использования:*\n' + `${result.list[0].example}`);
+	}
+    catch(err){
+		await ctx.reply('Ничего не найдено');
+		console.log(err.message);
+	}     
   }
 
   if (!input && ctx.message.reply_to_message) {
     const url = `http://api.urbandictionary.com/v0/define?term=${ctx.message.reply_to_message.text}`;
-    ud(url);
+    await ud(url);
   } else if (!input) {
     ctx.reply('Введи запрос после команды или ' +
       'отправь команду в ответ на сообщение');
   } else {
     const url = `http://api.urbandictionary.com/v0/define?term=${input}`;
-    ud(url);
+    await ud(url);
   }
 });
 
