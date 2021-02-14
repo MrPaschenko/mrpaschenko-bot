@@ -11,9 +11,9 @@ const bot = new Telegraf(process.env.token);
 const waApi = new WolframAlphaAPI(process.env.wolfram);
 
 Date.prototype.getWeek = function() {
-  const day = new Date(this.getFullYear(), 0, 1);
-  return Math.ceil((((this - day) / 86400000) + day.getDay() + 1) / 7);
-};
+        let day = new Date(this.getFullYear(), 0, 1);
+        return Math.ceil((((this - day) / 86400000) + day.getDay() + 1) / 7);
+    }
 
 bot.start(ctx => {
   ctx.reply('Привет!\n' +
@@ -84,32 +84,26 @@ bot.command('wa_full', async ctx => {
 });
 
 bot.command('get_schedule', async ctx => {
-  try {
-    const weekNumber = (new Date()).getWeek();
-    let lessons;
-    if (weekNumber % 2) lessons = timeTable['second_week'];
-    else lessons = timeTable['first_week'];
-    const dayOfWeek = new Date().getDay();
-    if (dayOfWeek === 6 || dayOfWeek === 0) {
-      return ctx.reply('Сегодня нет пар.');
-    }
-    const schedule = Object.keys(lessons);
-    const day = lessons[schedule[dayOfWeek - 1]];
-    console.log(day);
-    let message = '';
-    let counter = 1;
-    for (const pair of day) {
-      message += `${counter} пара:\n`;
-      const lessonKeys = Object.keys(pair);
-      for (const key of lessonKeys) {
-        message += `${pair[key]}\n`;
-      }
-      counter++;
-    }
-    await ctx.reply(message);
-  } catch (e) {
-    ctx.reply(e.message);
-  }
+	const weekNumber = (new Date()).getWeek();
+	let lessons;
+	if (weekNumber % 2) lessons = timeTable["second_week"]; 
+	else lessons = timeTable["first_week"]; 
+	const dayOfWeek = new Date().getDay();
+	if(dayOfWeek == 6 || dayOfWeek == 0) return await ctx.reply('Сегодня нет пар.');
+	const schedule = Object.keys(lessons);
+	const day = lessons[schedule[dayOfWeek - 1]];
+	console.log(day)
+	let message = '';
+	let counter = 1;
+	for(let pair of day){
+		message += `${counter} пара:\n`;
+		let lessonKeys = Object.keys(pair);
+		for(let key of lessonKeys){
+			message += `${pair[key]}\n`;
+		}
+	counter++;
+	}
+	await ctx.reply(message);
 });
 
 bot.command('ud', ctx => {
