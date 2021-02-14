@@ -4,7 +4,6 @@
   "dependencies": {
     "base64-to-image": "^1.0.2",
     "node-fetch": "^2.6.1",
-    "syllables-ru": "^1.1.0",
     "package-lock.json": "^1.0.0",
     "telegraf": "^4.0.2"
   },
