@@ -112,14 +112,17 @@ bot.command('ud', async ctx => {
   const input = ctx.message.text.split(' ').slice(1).join(' ');
 
   async function ud(url) {
-	try{
-		const result = (await fetch(url)).json();
-		ctx.replyWithMarkdown('*Определение:*\n' + `${result.list[0].definition}\n` + '\n*Пример использования:*\n' + `${result.list[0].example}`);
-	}
-    catch(err){
-		await ctx.reply('Ничего не найдено');
-		console.log(err.message);
-	}     
+    try {
+      const result = await fetch(url);
+      const json = await result.json();
+      await ctx.replyWithMarkdown('*Определение:*\n' +
+        `${json.list[0].definition}\n` +
+        '\n*Пример использования:*\n' +
+        `${json.list[0].example}`);
+    } catch (err) {
+      await ctx.reply('Ничего не найдено');
+      console.log(err.message);
+    }
   }
 
   if (!input && ctx.message.reply_to_message) {
