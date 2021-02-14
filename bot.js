@@ -11,9 +11,9 @@ const bot = new Telegraf(process.env.token);
 const waApi = new WolframAlphaAPI(process.env.wolfram);
 
 Date.prototype.getWeek = function() {
-        let day = new Date(this.getFullYear(), 0, 1);
-        return Math.ceil((((this - day) / 86400000) + day.getDay() + 1) / 7);
-    }
+  const day = new Date(this.getFullYear(), 0, 1);
+  return Math.ceil((((this - day) / 86400000) + day.getDay() + 1) / 7);
+};
 
 bot.start(ctx => {
   ctx.reply('Привет!\n' +
@@ -84,26 +84,32 @@ bot.command('wa_full', async ctx => {
 });
 
 bot.command('get_schedule', async ctx => {
-	const weekNumber = (new Date()).getWeek();
-	let lessons;
-	if (weekNumber % 2) lessons = timeTable["second_week"]; 
-	else lessons = timeTable["first_week"]; 
-	const dayOfWeek = new Date().getDay();
-	if(dayOfWeek >= 6) return ctx.reply('Сегодня нет пар.');
-	const schedule = Object.keys(lessons);
-	const day = lessons[schedule[dayOfWeek - 1]];
-	console.log(day)
-	let message = '';
-	let counter = 1;
-	for(let pair of day){
-		message += `${counter} пара:\n`;
-		let lessonKeys = Object.keys(pair);
-		for(let key of lessonKeys){
-			message += `${pair[key]}\n`;
-		}
-	counter++;
-	}
-	await ctx.reply(message);
+  try {
+    const weekNumber = (new Date()).getWeek();
+    let lessons;
+    if (weekNumber % 2) lessons = timeTable['second_week'];
+    else lessons = timeTable['first_week'];
+    const dayOfWeek = new Date().getDay();
+    if (dayOfWeek === 6 || dayOfWeek === 0) {
+      return ctx.reply('Сегодня нет пар.');
+    }
+    const schedule = Object.keys(lessons);
+    const day = lessons[schedule[dayOfWeek - 1]];
+    console.log(day);
+    let message = '';
+    let counter = 1;
+    for (const pair of day) {
+      message += `${counter} пара:\n`;
+      const lessonKeys = Object.keys(pair);
+      for (const key of lessonKeys) {
+        message += `${pair[key]}\n`;
+      }
+      counter++;
+    }
+    await ctx.reply(message);
+  } catch (e) {
+    ctx.reply(e.message);
+  }
 });
 
 bot.command('ud', ctx => {
@@ -164,15 +170,3 @@ bot.on('channel_post', ctx => {
 });
 
 bot.launch().then(() => console.log('Bot has successfully started!'));
-© 2021 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Docs
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
