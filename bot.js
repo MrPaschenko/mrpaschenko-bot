@@ -89,7 +89,7 @@ bot.command('get_schedule', async ctx => {
 	if (weekNumber % 2) lessons = timeTable["second_week"]; 
 	else lessons = timeTable["first_week"]; 
 	const dayOfWeek = new Date().getDay();
-	if(dayOfWeek >= 6) return ctx.reply('Сегодня нет пар.');
+	if(dayOfWeek == 6 || dayOfWeek == 0) return await ctx.reply('Сегодня нет пар.');
 	const schedule = Object.keys(lessons);
 	const day = lessons[schedule[dayOfWeek - 1]];
 	console.log(day)
