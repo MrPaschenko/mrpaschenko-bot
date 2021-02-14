@@ -23,9 +23,7 @@ bot.help(ctx => {
 });
 
 bot.command('wa', async ctx => {
-  const inputArray = ctx.message.text.split(' ');
-  inputArray.shift();
-  const input = inputArray.join(' ');
+  const input = ctx.message.text.split(' ').slice(1).join(' ');
 
   async function wa(request) {
     try {
@@ -56,9 +54,7 @@ bot.command('wa', async ctx => {
 });
 
 bot.command('wa_full', async ctx => {
-  const inputArray = ctx.message.text.split(' ');
-  inputArray.shift();
-  const input = inputArray.join(' ');
+  const input = ctx.message.text.split(' ').slice(1).join(' ');
 
   async function waFull(request) {
     try {
@@ -82,9 +78,7 @@ bot.command('wa_full', async ctx => {
 });
 
 bot.command('ud', ctx => {
-  const inputArray = ctx.message.text.split(' ');
-  inputArray.shift();
-  const input = inputArray.join(' ');
+  const input = ctx.message.text.split(' ').slice(1).join(' ');
 
   function ud(url) {
     fetch(url)
@@ -121,13 +115,11 @@ bot.hears(/^[fф]$/i, ctx => {
 
 bot.command('ping', ctx => {
   ctx.reply('i\'m here');
-  console.log(ctx.message.chat);
 });
 
 bot.command('send', ctx => {
-  const inputArray = ctx.message.text.split(' ');
-  inputArray.shift();
-  const input = inputArray.join(' ');
+  const input = ctx.message.text.split(' ').slice(1).join(' ');
+
   if (ctx.message.chat.id === parseInt(process.env.me)) {
     ctx.telegram.sendMessage(process.env.group, input)
       .catch(e => { ctx.reply(e.message); });
