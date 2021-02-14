@@ -34,7 +34,7 @@ async function getSchedule(){
 		}
 	counter++;
 	}
-	bot.telegram.sendMessage("-1001251404887", message);
+	await bot.telegram.sendMessage("-1001251404887", message);
 }
 
 const job = schedule.scheduleJob('00 00 * * *', getSchedule);
