@@ -8,7 +8,6 @@
     "telegraf": "^4.0.2"
   },
   "devDependencies": {
-    "config": "^3.3.3",
     "dotenv": "^8.2.0",
     "request": "^2.88.2",
     "syllables-ru": "^1.1.0",
