@@ -7,14 +7,7 @@
 $ npm install package-lock.json
 ```
 ### Making a configuration file
-Configuration file should be located at `config` folder and named as `default.json`:
-```
-{
-  "token" : "<telegram-bot>",
-  "wolfram" : "<wolfram-api>"
-}
-
-```
+Configuration file example is located at `./.env.example`:
 ### Starting script: 
 ```bash
 $ node bot.js
