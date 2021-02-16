@@ -12,6 +12,10 @@ Configuration file example is located at `./.env.example`:
 ```bash
 $ node bot.js
 ```
+or
+```bash
+$ npm start
+```
 ***
 ## Commands:
 ### Request to Wolfram|Alpha with simple answer
