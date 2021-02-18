@@ -1,10 +1,11 @@
 'use strict';
 
-const timeTable = require('./timetable.json');
+const https = require('https');
 const fetch = require('node-fetch');
 const { Telegraf } = require('telegraf');
+const timeTable = require('./timetable.json');
 const WolframAlphaAPI = require('wolfram-alpha-api');
-const schedule = require('node-schedule');
+
 
 require('dotenv').config();
 
@@ -79,6 +80,86 @@ bot.command('wa_full', async ctx => {
   }
 });
 
+bot.command('ud', async ctx => {
+  const input = ctx.message.text.split(' ').slice(1).join(' ');
+
+  async function ud(request) {
+    try {
+      const result = await fetch(request);
+      const json = await result.json();
+      await ctx.replyWithMarkdown('*Определение:*\n' +
+        `${json.list[0].definition}\n` +
+        '\n*Пример использования:*\n' +
+        `${json.list[0].example}`);
+    } catch (err) {
+      await ctx.reply('Ничего не найдено');
+      console.log(err.message);
+    }
+  }
+
+  if (!input && ctx.message.reply_to_message) {
+    const url = `http://api.urbandictionary.com/v0/define?term=${ctx.message.reply_to_message.text}`;
+    await ud(url);
+  } else if (!input) {
+    ctx.reply('Введи запрос после команды или ' +
+      'отправь команду в ответ на сообщение');
+  } else {
+    const url = `http://api.urbandictionary.com/v0/define?term=${input}`;
+    await ud(url);
+  }
+});
+
+bot.command('od', async ctx => {
+  const input = ctx.message.text.split(' ').slice(1).join(' ');
+
+  function od(request) {
+    const options = {
+      host: 'od-api.oxforddictionaries.com',
+      port: '443',
+      path: `/api/v2/entries/en-us/${request}`,
+      method: 'GET',
+      headers: {
+        'app_id': process.env.app_id,
+        'app_key': process.env.app_key,
+      }
+    };
+
+    https.get(options, resp => {
+      let body = '';
+      resp.on('data', d => {
+        body += d;
+      });
+      resp.on('end', () => {
+        const json = JSON.parse(body);
+        // fs.writeFile(`${request}.json`, JSON.stringify(json), err => {
+        //   if (err) {
+        //     console.log(err);
+        //   }
+        // });
+
+        const main = json.results[0].lexicalEntries[0].entries[0].senses[0];
+
+        let examples = '';
+        if (main.examples) {
+          examples = `\n*Пример использования:*\n${main.examples[0].text}`;
+        }
+        ctx.replyWithMarkdown('*Определение:*\n' +
+          `${main.definitions[0]}\n` + examples);
+      });
+    });
+  }
+
+  if (!input && ctx.message.reply_to_message) {
+    const input = ctx.message.reply_to_message.text;
+    od(input);
+  } else if (!input) {
+    ctx.reply('Введи запрос после команды или ' +
+      'отправь команду в ответ на сообщение');
+  } else {
+    od(input);
+  }
+});
+
 Date.prototype.getWeek = function() {
   const day = new Date(this.getFullYear(), 0, 1);
   return Math.ceil((((this - day) / 86400000) + day.getDay() + 1) / 7);
@@ -128,37 +209,8 @@ bot.command('get_week', ctx => {
 
 });
 
-bot.command('ud', async ctx => {
-  const input = ctx.message.text.split(' ').slice(1).join(' ');
-
-  async function ud(url) {
-    try {
-      const result = await fetch(url);
-      const json = await result.json();
-      await ctx.replyWithMarkdown('*Определение:*\n' +
-        `${json.list[0].definition}\n` +
-        '\n*Пример использования:*\n' +
-        `${json.list[0].example}`);
-    } catch (err) {
-      await ctx.reply('Ничего не найдено');
-      console.log(err.message);
-    }
-  }
-
-  if (!input && ctx.message.reply_to_message) {
-    const url = `http://api.urbandictionary.com/v0/define?term=${ctx.message.reply_to_message.text}`;
-    await ud(url);
-  } else if (!input) {
-    ctx.reply('Введи запрос после команды или ' +
-      'отправь команду в ответ на сообщение');
-  } else {
-    const url = `http://api.urbandictionary.com/v0/define?term=${input}`;
-    await ud(url);
-  }
-});
-
 bot.command('donate', ctx => {
-  ctx.reply('4149497110283761');
+  ctx.reply('5375414126741049');
 });
 
 bot.hears(/^[fф]$/i, ctx => {
