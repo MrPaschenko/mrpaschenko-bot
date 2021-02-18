@@ -21,8 +21,9 @@ bot.help(ctx => {
   ctx.reply('/wa - Wolfram Alpha запрос\n' +
     '/wa_full - То же самое, но с полным ответом картинкой\n' +
     '/ud - Urban Dictionary запрос\n' +
+    '/od - Oxford Dictionary запрос\n' +
     '/help - Список команд\n' +
-    '/donate - Кинуть автору на хостинг)');
+    '/donate - Кинуть автору на хостинг)\n');
 });
 
 bot.command('wa', async ctx => {
