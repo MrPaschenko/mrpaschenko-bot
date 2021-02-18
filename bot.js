@@ -11,38 +11,6 @@ require('dotenv').config();
 const bot = new Telegraf(process.env.token);
 const waApi = new WolframAlphaAPI(process.env.wolfram);
 
-
-async function getSchedule() {
-  const weekNumber = (new Date()).getWeek();
-  let lessons;
-  if (weekNumber % 2) lessons = timeTable['second_week'];
-  else lessons = timeTable['first_week'];
-  const dayOfWeek = (new Date()).getDay();
-  console.log(dayOfWeek);
-  if (dayOfWeek === 6 || dayOfWeek === 0) {
-    return await bot.telegram.sendMessage('-1001251404887', 'Сегодня нет пар.');
-  }
-  const schedule = Object.keys(lessons);
-  const day = lessons[schedule[dayOfWeek - 1]];
-  let message = '';
-  let counter = 1;
-  for (const pair of day) {
-    message += `${counter} пара:\n`;
-    const lessonKeys = Object.keys(pair);
-    for (const key of lessonKeys) {
-      message += `${pair[key]}\n`;
-    }
-    counter++;
-  }
-  bot.telegram.sendMessage('-1001251404887', message);
-}
-
-schedule.scheduleJob('00 00 * * *', getSchedule);
-Date.prototype.getWeek = function() {
-  const day = new Date(this.getFullYear(), 0, 1);
-  return Math.ceil((((this - day) / 86400000) + day.getDay() + 1) / 7);
-};
-
 bot.start(ctx => {
   ctx.reply('Привет!\n' +
     'Посмотри список команд либо отправь /help, чтобы узнать, что я умею');
@@ -111,7 +79,54 @@ bot.command('wa_full', async ctx => {
   }
 });
 
-bot.command('get_schedule', getSchedule);
+Date.prototype.getWeek = function() {
+  const day = new Date(this.getFullYear(), 0, 1);
+  return Math.ceil((((this - day) / 86400000) + day.getDay() + 1) / 7);
+};
+
+bot.command('get_schedule', async ctx => {
+  const weekNumber = (new Date()).getWeek();
+
+  let lessons;
+  if (!(weekNumber % 2)) lessons = timeTable['first_week'];
+  if (weekNumber % 2) lessons = timeTable['second_week'];
+
+  const dayOfWeek = (new Date()).getDay();
+
+  if (dayOfWeek === 0 || dayOfWeek === 6) {
+    await ctx.reply('Сегодня выходной!');
+  }
+
+  const schedule = Object.keys(lessons);
+  const day = lessons[schedule[dayOfWeek - 1]];
+
+  // let reply = '';
+  // for (let numberOfPara = 1; numberOfPara <= day.length; numberOfPara++) {
+  //   const para = day[numberOfPara - 1];
+  //   reply += `*${numberOfPara} пара (${`${para[lesson_time]}`})*`;
+  // }
+
+  let message = '';
+  let counter = 1;
+  for (const pair of day) {
+    message += `*${counter} пара:*\n`;
+    const lessonKeys = Object.keys(pair);
+    for (const key of lessonKeys) {
+      message += `${pair[key]}\n`;
+    }
+    counter++;
+  }
+  ctx.replyWithMarkdown(message).catch(e => {
+    ctx.reply(e.message);
+  });
+});
+
+bot.command('get_week', ctx => {
+  const weekNumber = (new Date()).getWeek();
+  if (weekNumber % 2) ctx.reply('Щас вторая неделя');
+  ctx.reply('Щас первая неделя');
+
+});
 
 bot.command('ud', async ctx => {
   const input = ctx.message.text.split(' ').slice(1).join(' ');
