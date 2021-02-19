@@ -22,6 +22,7 @@ bot.help(ctx => {
     '/wa_full - То же самое, но с полным ответом картинкой\n' +
     '/ud - Urban Dictionary запрос\n' +
     '/od - Oxford Dictionary запрос\n' +
+    '/od_audio - Озвучка слова оттуда же\n' +
     '/help - Список команд\n' +
     '/donate - Кинуть автору на хостинг)\n');
 });
@@ -132,20 +133,63 @@ bot.command('od', async ctx => {
       });
       resp.on('end', () => {
         const json = JSON.parse(body);
-        // fs.writeFile(`${request}.json`, JSON.stringify(json), err => {
-        //   if (err) {
-        //     console.log(err);
-        //   }
-        // });
 
-        const main = json.results[0].lexicalEntries[0].entries[0].senses[0];
-
-        let examples = '';
-        if (main.examples) {
-          examples = `\n*Пример использования:*\n${main.examples[0].text}`;
+        if (json.results === undefined) {
+          ctx.reply('Ничего не найдено');
+        } else {
+          const main = json.results[0].lexicalEntries[0].entries[0].senses[0];
+          let examples = '';
+          if (main.examples) {
+            examples = `\n*Пример использования:*\n${main.examples[0].text}`;
+          }
+          ctx.replyWithMarkdown('*Определение:*\n' +
+            `${main.definitions[0]}\n` + examples);
         }
-        ctx.replyWithMarkdown('*Определение:*\n' +
-          `${main.definitions[0]}\n` + examples);
+      });
+    });
+  }
+
+  if (!input && ctx.message.reply_to_message) {
+    const input = ctx.message.reply_to_message.text;
+    od(input);
+  } else if (!input) {
+    ctx.reply('Введи запрос после команды или ' +
+      'отправь команду в ответ на сообщение');
+  } else {
+    od(input);
+  }
+});
+
+bot.command('od_audio', ctx => {
+  const input = ctx.message.text.split(' ').slice(1).join(' ');
+
+  function od(request) {
+    const options = {
+      host: 'od-api.oxforddictionaries.com',
+      port: '443',
+      path: `/api/v2/entries/en-us/${request}`,
+      method: 'GET',
+      headers: {
+        'app_id': process.env.app_id,
+        'app_key': process.env.app_key,
+      }
+    };
+
+    https.get(options, resp => {
+      let body = '';
+      resp.on('data', d => {
+        body += d;
+      });
+      resp.on('end', () => {
+        const json = JSON.parse(body);
+
+        if (json.results === undefined) {
+          ctx.reply('Ничего не найдено');
+        } else {
+          const audio = json.results[0].lexicalEntries[0].entries[0]
+            .pronunciations[1].audioFile;
+          ctx.replyWithVoice(audio);
+        }
       });
     });
   }
