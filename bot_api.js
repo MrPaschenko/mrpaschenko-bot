@@ -122,7 +122,7 @@ module.exports = class Bot {
         } else {
           const audio = json.results[0].lexicalEntries[0].entries[0]
             .pronunciations[1].audioFile;
-          ctx.replyWithVoice(audio);
+          ctx.replyWithDocument(audio);
         }
       });
     });
