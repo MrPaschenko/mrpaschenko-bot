@@ -1,17 +1,11 @@
 'use strict';
 
+require('dotenv').config();
 const Bot = require('./bot_api.js');
-
 const { Telegraf } = require('telegraf');
 
-require('dotenv').config();
-
 const telebot = new Telegraf(process.env.token);
-
-
-
 const bot = new Bot();
-
 
 telebot.start(bot.start);
 
