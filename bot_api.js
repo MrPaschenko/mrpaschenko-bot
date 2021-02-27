@@ -260,6 +260,10 @@ module.exports = class Bot {
     await ctx.reply('i\'m here');
   }
 
+  async thispersondoesnotexist(ctx) {
+    await ctx.replyWithPhoto({ url: 'https://thispersondoesnotexist.com/image' });
+  }
+
   async send(ctx) {
     const input = Bot.normalizeInput(ctx.message.text);
     if (ctx.message.chat.id === parseInt(process.env.me)) {

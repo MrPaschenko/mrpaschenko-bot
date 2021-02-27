@@ -31,6 +31,8 @@ telebot.hears(/^[fф]$/i, bot.respect);
 
 telebot.command('ping', bot.ping);
 
+telebot.command('thispersondoesnotexist', bot.thispersondoesnotexist);
+
 telebot.command('send', bot.send);
 
 // Для пересылки сообщений с ссылками на пары
