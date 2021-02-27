@@ -2,7 +2,8 @@
 
 [Простой телеграм бот](https://t.me/MrPaschenko_bot)  
 [English version is available](https://github.com/MrPaschenko/mrpaschenko-bot/blob/master/README.md)
-## Установка
+
+# Установка
 
 ### 1. Установи все нужные модули с помощью npm:
 ```bash
@@ -18,7 +19,8 @@ $ node bot.js
 ```bash
 $ npm start
 ```
-## Команды:
+
+# Команды:
 
 ### Запрос в Wolfram|Alpha с простым ответом
 ```

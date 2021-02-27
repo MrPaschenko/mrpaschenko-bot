@@ -1,9 +1,10 @@
 # mrpaschenko-bot
-***
+
 [Simple telegram bot](https://t.me/MrPaschenko_bot)  
 [Доступна русская версия](https://github.com/MrPaschenko/mrpaschenko-bot/blob/master/README-RU.md)
-## Setup
-***
+
+# Setup
+
 ### 1. Install all necessary modules via npm:
 ```bash
 $ npm install package-lock.json
@@ -18,8 +19,9 @@ or
 ```bash
 $ npm start
 ```
-## Commands:
-***
+
+# Commands:
+
 ### Request to Wolfram|Alpha with simple answer
 ```
 /wa <request>
