@@ -3,14 +3,8 @@
 require('dotenv').config();
 const https = require('https');
 const fetch = require('node-fetch');
-const timeTable = require('./timetable.json');
 const WolframAlphaAPI = require('wolfram-alpha-api');
 const waApi = new WolframAlphaAPI(process.env.wolfram);
-
-Date.prototype.getWeek = function() {
-  const day = new Date(this.getFullYear(), 0, 1);
-  return Math.ceil((((this - day) / 86400000) + day.getDay() + 1) / 7);
-};
 
 module.exports = class Bot {
   constructor() {
@@ -195,7 +189,7 @@ module.exports = class Bot {
       ctx.reply('Введи запрос после команды или ' +
 			'отправь команду в ответ на сообщение');
     } else {
-      Bot.odRequest(ctx, input);
+      await Bot.odRequest(ctx, input);
     }
   }
 
@@ -204,48 +198,13 @@ module.exports = class Bot {
 
     if (!input && ctx.message.reply_to_message) {
       const input = ctx.message.reply_to_message.text;
-      Bot.odAudioRequest(ctx, input);
+      await Bot.odAudioRequest(ctx, input);
     } else if (!input) {
       ctx.reply('Введи запрос после команды или ' +
 			'отправь команду в ответ на сообщение');
     } else {
       await Bot.odAudioRequest(ctx, input);
     }
-  }
-
-  async getSchedule(ctx, timetable) {
-    const weekNumber = (new Date()).getWeek();
-
-    const lessons = (weekNumber % 2) ? timeTable['second_week'] : timeTable['first_week'];
-    const dayOfWeek = (new Date()).getDay();
-
-    if (dayOfWeek === 0 || dayOfWeek === 6) {
-      await ctx.reply('Сегодня выходной!');
-    }
-
-    const schedule = Object.keys(lessons);
-    const day = lessons[schedule[dayOfWeek - 1]];
-
-
-    let message = '';
-    let counter = 1;
-    for (const pair of day) {
-      message += `*${counter} пара:*\n`;
-      const lessonKeys = Object.keys(pair);
-      for (const key of lessonKeys) {
-        message += `${pair[key]}\n`;
-      }
-      counter++;
-    }
-    await ctx.replyWithMarkdown(message).catch(async e => {
-      await ctx.reply(e.message);
-    });
-  }
-
-  async getWeek(ctx) {
-    const weekNumber = (new Date()).getWeek();
-    if (weekNumber % 2) ctx.reply('Щас вторая неделя');
-    ctx.reply('Щас первая неделя');
   }
 
   async donate(ctx) {

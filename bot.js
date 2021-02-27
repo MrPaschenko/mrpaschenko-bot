@@ -21,10 +21,6 @@ telebot.command('od', bot.od);
 
 telebot.command('od_audio', bot.odAudio);
 
-telebot.command('get_schedule', bot.getSchedule);
-
-telebot.command('get_week', bot.getWeek);
-
 telebot.command('donate', bot.donate);
 
 telebot.hears(/^[fф]$/i, bot.respect);
