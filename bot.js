@@ -208,7 +208,7 @@ bot.hears(/^[fф]$/i, ctx => {
   ctx.reply('F');
 });
 
-bot.hears('....', ctx => {
+bot.hears(/[,.]{4,}/, ctx => {
   ctx.reply('Baba Valia detected');
 });
 
