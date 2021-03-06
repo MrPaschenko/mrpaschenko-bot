@@ -208,6 +208,10 @@ bot.hears(/^[fф]$/i, ctx => {
   ctx.reply('F');
 });
 
+bot.hears('....', ctx => {
+  ctx.reply('Baba Valia detected');
+});
+
 bot.command('send', ctx => {
   const input = ctx.message.text.split(' ').slice(1).join(' ');
 
