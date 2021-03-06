@@ -186,7 +186,7 @@ bot.command('od_audio', ctx => {
         } else {
           const audio = json.results[0].lexicalEntries[0].entries[0]
             .pronunciations[1].audioFile;
-          ctx.replyWithVoice(audio);
+          ctx.replyWithDocument(audio);
         }
       });
     });
@@ -203,17 +203,9 @@ bot.command('od_audio', ctx => {
   }
 });
 
-bot.command('donate', ctx => {
-  ctx.reply('Сервер бесплатный, лучше задонать деткам:\n' +
-    'https://pomogaem.com.ua/help/healthy/');
-});
-
+// <- Мелкие, бесполезные команды начинаются здесь ->
 bot.hears(/^[fф]$/i, ctx => {
   ctx.reply('F');
-});
-
-bot.command('ping', ctx => {
-  ctx.reply('i\'m here');
 });
 
 bot.command('send', ctx => {
@@ -224,6 +216,24 @@ bot.command('send', ctx => {
       .catch(e => { ctx.reply(e.message); });
   }
 });
+
+bot.command('donate', ctx => {
+  ctx.reply('Сервер бесплатный, лучше задонать деткам:\n' +
+    'https://pomogaem.com.ua/help/healthy/');
+});
+
+bot.command('thispersondoesnotexist', ctx => {
+  ctx.replyWithPhoto({ url: 'https://thispersondoesnotexist.com/image' });
+});
+
+bot.command('thiscatdoesnotexist', ctx => {
+  ctx.replyWithPhoto({ url: 'https://thiscatdoesnotexist.com/' });
+});
+
+bot.command('ping', ctx => {
+  ctx.reply('i\'m here');
+});
+// <- Мелкие, бесполезные команды заканчиваются здесь ->
 
 // Для пересылки сообщений с ссылками на пары
 bot.on('channel_post', ctx => {
