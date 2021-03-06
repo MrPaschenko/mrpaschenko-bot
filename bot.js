@@ -235,11 +235,13 @@ bot.command('thiscatdoesnotexist', ctx => {
 });
 
 bot.command('thiswaifudoesnotexist', ctx => {
-  const randomNumber = () => Math.floor(Math.random() * 9);
+  const randomNumber = () => Math.floor(Math.random() * 10);
 
   ctx.replyWithPhoto({
     url:
-      `https://www.thiswaifudoesnotexist.net/example-${randomNumber}${randomNumber}${randomNumber}${randomNumber}${randomNumber}.jpg`
+      `https://www.thiswaifudoesnotexist.net/example-${randomNumber()}${randomNumber()}${randomNumber()}${randomNumber()}${randomNumber()}.jpg`
+  }).catch(e => {
+    ctx.reply(e.message);
   });
 });
 
