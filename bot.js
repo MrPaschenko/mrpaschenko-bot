@@ -3,9 +3,7 @@
 const https = require('https');
 const fetch = require('node-fetch');
 const { Telegraf } = require('telegraf');
-const timeTable = require('./timetable.json');
 const WolframAlphaAPI = require('wolfram-alpha-api');
-
 
 require('dotenv').config();
 
@@ -205,57 +203,9 @@ bot.command('od_audio', ctx => {
   }
 });
 
-Date.prototype.getWeek = function() {
-  const day = new Date(this.getFullYear(), 0, 1);
-  return Math.ceil((((this - day) / 86400000) + day.getDay() + 1) / 7);
-};
-
-bot.command('get_schedule', async ctx => {
-  const weekNumber = (new Date()).getWeek();
-
-  let lessons;
-  if (!(weekNumber % 2)) lessons = timeTable['first_week'];
-  if (weekNumber % 2) lessons = timeTable['second_week'];
-
-  const dayOfWeek = (new Date()).getDay();
-
-  if (dayOfWeek === 0 || dayOfWeek === 6) {
-    await ctx.reply('Сегодня выходной!');
-  }
-
-  const schedule = Object.keys(lessons);
-  const day = lessons[schedule[dayOfWeek - 1]];
-
-  // let reply = '';
-  // for (let numberOfPara = 1; numberOfPara <= day.length; numberOfPara++) {
-  //   const para = day[numberOfPara - 1];
-  //   reply += `*${numberOfPara} пара (${`${para[lesson_time]}`})*`;
-  // }
-
-  let message = '';
-  let counter = 1;
-  for (const pair of day) {
-    message += `*${counter} пара:*\n`;
-    const lessonKeys = Object.keys(pair);
-    for (const key of lessonKeys) {
-      message += `${pair[key]}\n`;
-    }
-    counter++;
-  }
-  ctx.replyWithMarkdown(message).catch(e => {
-    ctx.reply(e.message);
-  });
-});
-
-bot.command('get_week', ctx => {
-  const weekNumber = (new Date()).getWeek();
-  if (weekNumber % 2) ctx.reply('Щас вторая неделя');
-  ctx.reply('Щас первая неделя');
-
-});
-
 bot.command('donate', ctx => {
-  ctx.reply('5375414126741049');
+  ctx.reply('Сервер бесплатный, лучше задонать деткам:\n' +
+    'https://pomogaem.com.ua/help/healthy/');
 });
 
 bot.hears(/^[fф]$/i, ctx => {
