@@ -234,6 +234,15 @@ bot.command('thiscatdoesnotexist', ctx => {
   ctx.replyWithPhoto({ url: 'https://thiscatdoesnotexist.com/' });
 });
 
+bot.command('thiswaifudoesnotexist', ctx => {
+  const randomNumber = () => Math.floor(Math.random() * 9);
+
+  ctx.replyWithPhoto({
+    url:
+      `https://www.thiswaifudoesnotexist.net/example-${randomNumber}${randomNumber}${randomNumber}${randomNumber}${randomNumber}.jpg`
+  });
+});
+
 bot.command('ping', ctx => {
   ctx.reply('i\'m here');
 });
