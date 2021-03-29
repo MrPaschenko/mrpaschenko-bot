@@ -192,9 +192,13 @@ bot.command('od_audio', ctx => {
     });
   }
 
-  if (!input && ctx.message.reply_to_message) {
+  if (input.toLowerCase() === 'aboba' || '🅰️🅱️🅾️🅱️🅰️') {
+    ctx.replyWithAudio('https://api.meowpad.me/v1/download/28034-aboba');
+  } else if (!input && ctx.message.reply_to_message) {
     const input = ctx.message.reply_to_message.text;
-    od(input);
+    if (input.toLowerCase() === 'aboba' || '🅰️🅱️🅾️🅱️🅰️') {
+      ctx.replyWithAudio('https://api.meowpad.me/v1/download/28034-aboba');
+    } else od(input);
   } else if (!input) {
     ctx.reply('Введи запрос после команды или ' +
       'отправь команду в ответ на сообщение');
@@ -236,7 +240,6 @@ bot.command('thiscatdoesnotexist', ctx => {
 
 bot.command('thiswaifudoesnotexist', ctx => {
   const randomNumber = () => Math.floor(Math.random() * 10);
-
   ctx.replyWithPhoto({
     url:
       `https://www.thiswaifudoesnotexist.net/example-${randomNumber()}${randomNumber()}${randomNumber()}${randomNumber()}${randomNumber()}.jpg`
