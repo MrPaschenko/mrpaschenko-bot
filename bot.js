@@ -216,6 +216,12 @@ bot.hears(/[,.]{4,}/, ctx => {
   ctx.reply('Baba Valia detected');
 });
 
+bot.on('location', ctx => {
+  ctx.reply(`${ctx.message.location.latitude}\n` +
+    `${ctx.message.location.longitude}`);
+  console.log(ctx.message.location);
+});
+
 bot.command('send', ctx => {
   const input = ctx.message.text.split(' ').slice(1).join(' ');
 
