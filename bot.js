@@ -192,19 +192,21 @@ bot.command('od_audio', ctx => {
     });
   }
 
-  if (input.toLowerCase() === 'aboba' || '🅰️🅱️🅾️🅱️🅰️') {
+  if (input.toLowerCase() === ('aboba' || '🅰️🅱️🅾️🅱️🅰️')) {
     ctx.replyWithAudio('https://api.meowpad.me/v1/download/28034-aboba');
-  } else if (!input && ctx.message.reply_to_message) {
+  }
+
+  if (!input && ctx.message.reply_to_message) {
     const input = ctx.message.reply_to_message.text;
-    if (input.toLowerCase() === 'aboba' || '🅰️🅱️🅾️🅱️🅰️') {
+
+    if (input.toLowerCase() === ('aboba' || '🅰️🅱️🅾️🅱️🅰️')) {
       ctx.replyWithAudio('https://api.meowpad.me/v1/download/28034-aboba');
     } else od(input);
+
   } else if (!input) {
     ctx.reply('Введи запрос после команды или ' +
       'отправь команду в ответ на сообщение');
-  } else {
-    od(input);
-  }
+  } else od(input);
 });
 
 // <- Мелкие, бесполезные команды начинаются здесь ->
