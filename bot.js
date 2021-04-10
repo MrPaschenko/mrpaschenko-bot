@@ -207,28 +207,6 @@ bot.command('od_audio', ctx => {
   } else od(message);
 });
 
-bot.command('ig', ctx => {
-  const message = ctx.message.text.split(' ').slice(1).join(' ');
-
-  async function igPic(nickname) {
-    const url = `https://www.instagram.com/${nickname}/?__a=1`;
-    const json = await fetch(url).then(res => res.json());
-    const picUrl = json.graphql.user.profile_pic_url_hd;
-
-    ctx.replyWithPhoto({ url: picUrl, caption: `https://www.instagram.com/${nickname}/` });
-  }
-
-  if (!message && ctx.message.reply_to_message) {
-    const input = ctx.message.reply_to_message.text;
-    igPic(input).catch(e => { ctx.reply(e.message); });
-  } else if (!message) {
-    ctx.reply('Введи запрос после команды или ' +
-      'отправь команду в ответ на сообщение');
-  } else {
-    igPic(message).catch(e => { ctx.reply(e.message); });
-  }
-});
-
 // <- Мелкие, бесполезные команды начинаются здесь ->
 bot.hears(/^[fф]$/i, ctx => {
   ctx.reply('F');
@@ -280,6 +258,28 @@ bot.command('thiswaifudoesnotexist', ctx => {
 
 bot.command('ping', ctx => {
   ctx.reply('i\'m here');
+});
+
+bot.command('ig', ctx => {
+  const message = ctx.message.text.split(' ').slice(1).join(' ');
+
+  async function igPic(nickname) {
+    const url = `https://www.instagram.com/${nickname}/?__a=1`;
+    const json = await fetch(url).then(res => res.json());
+    const picUrl = json.graphql.user.profile_pic_url_hd;
+
+    ctx.replyWithPhoto({ url: picUrl, caption: `https://www.instagram.com/${nickname}/` });
+  }
+
+  if (!message && ctx.message.reply_to_message) {
+    const input = ctx.message.reply_to_message.text;
+    igPic(input).catch(e => { ctx.reply(e.message); });
+  } else if (!message) {
+    ctx.reply('Введи запрос после команды или ' +
+      'отправь команду в ответ на сообщение');
+  } else {
+    igPic(message).catch(e => { ctx.reply(e.message); });
+  }
 });
 // <- Мелкие, бесполезные команды заканчиваются здесь ->
 
