@@ -212,7 +212,7 @@ bot.hears(/^[fф]$/i, ctx => {
   ctx.reply('F');
 });
 
-bot.hears(/^([,|.]?[0-9])+$/, ctx => {
+bot.hears(/^-?\\d*(\\.\\d+)?$/, ctx => {
   ctx.reply(`Нет, ${parseFloat(ctx.message.text) + 1}`,
     // eslint-disable-next-line camelcase
     { reply_to_message_id: ctx.message.message_id });
