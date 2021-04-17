@@ -212,9 +212,8 @@ bot.hears(/^[fф]$/i, ctx => {
   ctx.reply('F');
 });
 
-bot.hears(/^(-?[1-9]+\\d*([.]\\d+)?)$|^(-?0[.]\\d*[1-9]+)$|^0$/, ctx => {
-  ctx.reply('true');
-  ctx.reply(`Нет, ${parseFloat(ctx.message.text) + 1}`,
+bot.hears(/^-?[0-9]+$/, ctx => {
+  ctx.reply(`Нет, ${parseInt(ctx.message.text) + 1}`,
     // eslint-disable-next-line camelcase
     { reply_to_message_id: ctx.message.message_id });
 });
