@@ -85,7 +85,7 @@ bot.command('ud', async ctx => {
 
   function ud(request) {
     try {
-      https.get(`http://api.urbandictionary.com/v0/define?term=${request}`, res => {
+      https.get(`https://api.urbandictionary.com/v0/define?term=${request}`, res => {
         if (res.statusCode !== 200) {
           const { statusCode, statusMessage } = res;
           ctx.replyWithMarkdown('Ничего не найдено\n' +
