@@ -124,33 +124,35 @@ bot.command('od', async ctx => {
       }
     };
 
-    https.get(options, res => {
-      if (res.statusCode !== 200) {
-        const { statusCode, statusMessage } = res;
-        ctx.reply(`Status Code: ${statusCode} ${statusMessage}`);
-        return;
-      }
+    try {
+      https.get(options, res => {
+        if (res.statusCode !== 200) {
+          const { statusCode, statusMessage } = res;
+          ctx.replyWithMarkdown('Ничего не найдено\n' +
+            `_(Status Code: ${statusCode} ${statusMessage})_`);
+          return;
+        }
 
-      const buffer = [];
-      res.on('data', chunk => {
-        buffer.push(chunk);
-      });
+        let body = '';
+        res.on('data', chunk => {
+          body += chunk.toString();
+        });
 
-      res.on('end', () => {
-        const json = JSON.parse(buffer.join());
-        if (json.results === undefined) {
-          ctx.reply('Ничего не найдено');
-        } else {
-          const main = json.results[0].lexicalEntries[0].entries[0].senses[0];
+        res.on('end', () => {
+          const parsed = JSON.parse(body);
+          const main = parsed.results[0].lexicalEntries[0].entries[0].senses[0];
           let examples = '';
           if (main.examples) {
             examples = `\n*Пример использования:*\n${main.examples[0].text}`;
           }
           ctx.replyWithMarkdown('*Определение:*\n' +
             `${main.definitions[0]}\n` + examples);
-        }
+        });
       });
-    });
+    } catch (e) {
+      ctx.replyWithMarkdown('Ничего не найдено\n' +
+        `_(${e.message})_`);
+    }
   }
 
   if (!input && ctx.message.reply_to_message) {
