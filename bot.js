@@ -186,50 +186,57 @@ bot.command('od', async ctx => {
 bot.command('od_audio', ctx => {
   const message = ctx.message.text.split(' ').slice(1).join(' ');
 
-  function od(request) {
-    if (/[a-z]/ig.test(request)) {
-      const options = {
-        host: 'od-api.oxforddictionaries.com',
-        port: '443',
-        path: `/api/v2/entries/en-us/${request}`,
-        method: 'GET',
-        headers: {
-          'app_id': process.env.app_id,
-          'app_key': process.env.app_key,
+  function odAudio(request) {
+    if (request === 'aboba') {
+      ctx.replyWithAudio('https://api.meowpad.me/v1/download/28034-aboba');
+      return;
+    }
+
+    const options = {
+      host: 'od-api.oxforddictionaries.com',
+      port: '443',
+      path: `/api/v2/entries/en-us/${request}`,
+      method: 'GET',
+      headers: {
+        'app_id': process.env.app_id,
+        'app_key': process.env.app_key,
+      }
+    };
+
+    try {
+      https.get(options, res => {
+        if (res.statusCode !== 200) {
+          const { statusCode, statusMessage } = res;
+          ctx.replyWithMarkdown('Ничего не найдено\n' +
+            `_(Status Code: ${statusCode} ${statusMessage})_`);
+          return;
         }
-      };
 
-      https.get(options, resp => {
         let body = '';
-        resp.on('data', d => {
-          body += d;
+        res.on('data', chunk => {
+          body += chunk.toString();
         });
-        resp.on('end', () => {
-          const json = JSON.parse(body);
 
-          if (json.results === undefined) {
-            ctx.reply('Ничего не найдено');
-          } else {
-            const audio = json.results[0].lexicalEntries[0].entries[0]
-              .pronunciations[1].audioFile;
-            ctx.replyWithDocument(audio);
-          }
+        res.on('end', () => {
+          const parsed = JSON.parse(body);
+          const audio = parsed.results[0].lexicalEntries[0].entries[0]
+            .pronunciations[1].audioFile;
+          ctx.replyWithDocument(audio);
         });
       });
-    } else ctx.reply('Ничего не найдено');
+    } catch (e) {
+      ctx.replyWithMarkdown('Ничего не найдено\n' +
+        `_(${e.message})_`);
+    }
   }
 
-  if (message.toLowerCase() === 'aboba') {
-    ctx.replyWithAudio('https://api.meowpad.me/v1/download/28034-aboba');
-  } else if (!message && ctx.message.reply_to_message) {
+  if (!message && ctx.message.reply_to_message) {
     const reply = ctx.message.reply_to_message.text;
-    if (reply.toLowerCase() === 'aboba') {
-      ctx.replyWithAudio('https://api.meowpad.me/v1/download/28034-aboba');
-    } else od(reply);
+    odAudio(reply);
   } else if (!message) {
     ctx.reply('Введи запрос после команды или ' +
       'отправь команду в ответ на сообщение');
-  } else od(message);
+  } else odAudio(message);
 });
 
 // <- Мелкие, бесполезные команды начинаются здесь ->
