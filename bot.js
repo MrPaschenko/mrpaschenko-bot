@@ -83,29 +83,42 @@ bot.command('wa_full', async ctx => {
 bot.command('ud', async ctx => {
   const input = ctx.message.text.split(' ').slice(1).join(' ');
 
-  async function ud(request) {
+  function ud(request) {
     try {
-      const result = await fetch(request);
-      const json = await result.json();
-      await ctx.replyWithMarkdown('*Определение:*\n' +
-        `${json.list[0].definition}\n` +
-        '\n*Пример использования:*\n' +
-        `${json.list[0].example}`);
-    } catch (err) {
-      await ctx.reply('Ничего не найдено');
-      console.log(err.message);
+      https.get(`http://api.urbandictionary.com/v0/define?term=${request}`, res => {
+        if (res.statusCode !== 200) {
+          const { statusCode, statusMessage } = res;
+          ctx.replyWithMarkdown('Ничего не найдено\n' +
+            `_(Status Code: ${statusCode} ${statusMessage})_`);
+          return;
+        }
+
+        let body = '';
+        res.on('data', chunk => {
+          body += chunk.toString();
+        });
+
+        res.on('end', () => {
+          const parsed = JSON.parse(body);
+          ctx.replyWithMarkdown('*Определение:*\n' +
+            `${parsed.list[0].definition}\n` +
+            '\n*Пример использования:*\n' +
+            `${parsed.list[0].example}`);
+        });
+      });
+    } catch (e) {
+      ctx.replyWithMarkdown('Ничего не найдено\n' +
+        `_(${e.message})_`);
     }
   }
 
   if (!input && ctx.message.reply_to_message) {
-    const url = `http://api.urbandictionary.com/v0/define?term=${ctx.message.reply_to_message.text}`;
-    await ud(url);
+    ud(ctx.message.reply_to_message.text);
   } else if (!input) {
     ctx.reply('Введи запрос после команды или ' +
       'отправь команду в ответ на сообщение');
   } else {
-    const url = `http://api.urbandictionary.com/v0/define?term=${input}`;
-    await ud(url);
+    await ud(input);
   }
 });
 
