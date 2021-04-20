@@ -124,14 +124,20 @@ bot.command('od', async ctx => {
       }
     };
 
-    https.get(options, resp => {
-      let body = '';
-      resp.on('data', d => {
-        body += d;
-      });
-      resp.on('end', () => {
-        const json = JSON.parse(body);
+    https.get(options, res => {
+      if (res.statusCode !== 200) {
+        const { statusCode, statusMessage } = res;
+        ctx.reply(`Status Code: ${statusCode} ${statusMessage}`);
+        return;
+      }
 
+      const buffer = [];
+      resp.on('data', chunk => {
+        buffer.push(chunk);
+      });
+
+      resp.on('end', () => {
+        const json = JSON.parse(buffer);
         if (json.results === undefined) {
           ctx.reply('Ничего не найдено');
         } else {
