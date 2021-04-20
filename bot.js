@@ -100,6 +100,10 @@ bot.command('ud', async ctx => {
 
         res.on('end', () => {
           const parsed = JSON.parse(body);
+          if (!parsed.list[0]) {
+            ctx.reply('Ничего не найдено');
+            return;
+          }
           ctx.replyWithMarkdown('*Определение:*\n' +
             `${parsed.list[0].definition}\n` +
             '\n*Пример использования:*\n' +
