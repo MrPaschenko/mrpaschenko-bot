@@ -137,7 +137,7 @@ bot.command('od', async ctx => {
       });
 
       res.on('end', () => {
-        const json = JSON.parse(buffer);
+        const json = JSON.parse(buffer.join());
         if (json.results === undefined) {
           ctx.reply('Ничего не найдено');
         } else {
