@@ -132,11 +132,11 @@ bot.command('od', async ctx => {
       }
 
       const buffer = [];
-      resp.on('data', chunk => {
+      res.on('data', chunk => {
         buffer.push(chunk);
       });
 
-      resp.on('end', () => {
+      res.on('end', () => {
         const json = JSON.parse(buffer);
         if (json.results === undefined) {
           ctx.reply('Ничего не найдено');
