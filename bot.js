@@ -1,7 +1,6 @@
 'use strict';
 
 const https = require('https');
-const fetch = require('node-fetch');
 const { Telegraf } = require('telegraf');
 const WolframAlphaAPI = require('wolfram-alpha-api');
 
