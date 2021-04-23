@@ -258,6 +258,15 @@ bot.command('send', ctx => {
   }
 });
 
+bot.command('document', ctx => {
+  if (ctx.message.reply_to_message.text) {
+    ctx.replyWithDocument({ source: ctx.message.reply_to_message.text })
+      .catch(e => {
+        ctx.replyWithMarkdown(`_${e.message}_`);
+      });
+  }
+});
+
 bot.command('donate', ctx => {
   ctx.reply('Сервер бесплатный, лучше задонать деткам:\n' +
     'https://pomogaem.com.ua/help/healthy/');
