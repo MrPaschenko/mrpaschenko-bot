@@ -7,10 +7,12 @@
 
 ### 1. Install all necessary modules via npm:
 ```bash
-$ npm install package-lock.json
+$ npm install
 ```
+
 ### 2. Set up a configuration file
 Configuration file should be named as `.env`, example is named as `.env.example`
+
 ### 3. Start: 
 ```bash
 $ node bot.js
