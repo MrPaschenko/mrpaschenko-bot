@@ -38,10 +38,12 @@ $ npm start
 ```
 /ud <request>
 ```
+
 ### Word definition from Oxford Dictionary
 ```
 /od <request>
 ```
+
 ### Pronunciation from Oxford Dictionary
 ```
 /od_audio <request>

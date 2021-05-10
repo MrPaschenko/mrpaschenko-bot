@@ -7,10 +7,12 @@
 
 ### 1. Установи все нужные модули с помощью npm:
 ```bash
-$ npm install package-lock.json
+$ npm install
 ```
+
 ### 2. Настрой конфигурационный файл
 Конфигурационный файл должен называться `.env`, пример называется `.env.example`
+
 ### 3. Запускай:
 ```bash
 $ node bot.js
@@ -36,10 +38,12 @@ $ npm start
 ```
 /ud <request>
 ```
+
 ### Определение слова от Oxford Dictionary
 ```
 /od <request>
 ```
+
 ### Произношение от Oxford Dictionary
 ```
 /od_audio <request>
