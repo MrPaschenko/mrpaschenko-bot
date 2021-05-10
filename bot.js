@@ -6,8 +6,8 @@ const WolframAlphaAPI = require('wolfram-alpha-api');
 
 require('dotenv').config();
 
-const bot = new Telegraf(process.env.token);
-const waApi = new WolframAlphaAPI(process.env.wolfram);
+const bot = new Telegraf(process.env.TOKEN);
+const waApi = new WolframAlphaAPI(process.env.WOLFRAM);
 
 bot.start(ctx => {
   ctx.reply('Привет!\n' +
@@ -135,8 +135,8 @@ bot.command('od', async ctx => {
       path: `/api/v2/entries/en-us/${request}`,
       method: 'GET',
       headers: {
-        'app_id': process.env.app_id,
-        'app_key': process.env.app_key,
+        'app_id': process.env.APP_ID,
+        'app_key': process.env.APP_KEY,
       }
     };
 
@@ -197,8 +197,8 @@ bot.command('od_audio', ctx => {
       path: `/api/v2/entries/en-us/${request}`,
       method: 'GET',
       headers: {
-        'app_id': process.env.app_id,
-        'app_key': process.env.app_key,
+        'app_id': process.env.APP_ID,
+        'app_key': process.env.APP_KEY,
       }
     };
 
@@ -252,8 +252,8 @@ bot.on('location', ctx => {
 bot.command('send', ctx => {
   const input = ctx.message.text.split(' ').slice(1).join(' ');
 
-  if (ctx.message.chat.id === parseInt(process.env.me)) {
-    ctx.telegram.sendMessage(process.env.group, input)
+  if (ctx.message.chat.id === parseInt(process.env.ME)) {
+    ctx.telegram.sendMessage(process.env.GROUP, input)
       .catch(e => { ctx.reply(e.message); });
   }
 });
@@ -296,8 +296,8 @@ bot.command('ping', ctx => {
 // Для пересылки сообщений с ссылками на пары
 bot.on('channel_post', ctx => {
   const senderChatId = ctx.update.channel_post.sender_chat.id;
-  if (senderChatId === parseInt(process.env.channel)) {
-    ctx.forwardMessage(process.env.group);
+  if (senderChatId === parseInt(process.env.CHANNEL)) {
+    ctx.forwardMessage(process.env.GROUP);
   }
 });
 
