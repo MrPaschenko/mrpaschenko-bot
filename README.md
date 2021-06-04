@@ -24,7 +24,7 @@ $ npm start
 
 ## Commands:
 
-### Request to Wolfram|Alpha with simple answer
+### Request to [Wolfram|Alpha](https://www.wolframalpha.com/) with simple answer
 ```
 /wa <request>
 ```
@@ -34,17 +34,17 @@ $ npm start
 /wa_full <request>
 ```
 
-### Word definition from Urban Dictionary
+### Word definition from [Urban Dictionary](https://www.urbandictionary.com/)
 ```
 /ud <request>
 ```
 
-### Word definition from Oxford Dictionary
+### Word definition from [Oxford Dictionary](https://www.oxfordlearnersdictionaries.com/)
 ```
 /od <request>
 ```
 
-### Pronunciation from Oxford Dictionary
+### Pronunciation from [Oxford Dictionary](https://www.oxfordlearnersdictionaries.com/
 ```
 /od_audio <request>
 ```
