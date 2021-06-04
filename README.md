@@ -44,7 +44,7 @@ $ npm start
 /od <request>
 ```
 
-### Pronunciation from [Oxford Dictionary](https://www.oxfordlearnersdictionaries.com/
+### Pronunciation from [Oxford Dictionary](https://www.oxfordlearnersdictionaries.com/)
 ```
 /od_audio <request>
 ```
