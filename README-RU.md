@@ -3,7 +3,7 @@
 [Простой телеграм бот](https://t.me/MrPaschenko_bot)  
 [English version is available](https://github.com/MrPaschenko/mrpaschenko-bot/blob/master/README.md)
 
-# Установка
+## Установка
 
 ### 1. Установи все нужные модули с помощью npm:
 ```bash
@@ -22,9 +22,9 @@ $ node bot.js
 $ npm start
 ```
 
-# Команды:
+## Команды:
 
-### Запрос в Wolfram|Alpha с простым ответом
+### Запрос в [Wolfram|Alpha](https://www.wolframalpha.com/) с простым ответом
 ```
 /wa <request>
 ```
@@ -34,19 +34,19 @@ $ npm start
 /wa_full <request>
 ```
 
-### Определение слова от Urban Dictionary
+### Определение слова от [Urban Dictionary](https://www.urbandictionary.com/)
 ```
 /ud <request>
 ```
 
-### Определение слова от Oxford Dictionary
+### Определение слова от [Oxford Dictionary](https://www.oxfordlearnersdictionaries.com/)
 ```
 /od <request>
 ```
 
-### Произношение от Oxford Dictionary
+### Произношение от [Oxford Dictionary](https://www.oxfordlearnersdictionaries.com/)
 ```
 /od_audio <request>
 ```
 
-_Ты так же можешь выполнить запрос, отвечая командой на другое сообщениеe_
+_Ты так же можешь выполнить запрос, отвечая командой на другое сообщениe_
