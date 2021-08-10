@@ -238,6 +238,51 @@ bot.command('od_audio', ctx => {
   } else odAudio(message);
 });
 
+bot.command('broot', ctx => {
+  function setCharAt(str, index, chr) {
+    if (index > str.length - 1) return str;
+    return str.substring(0, index) + chr + str.substring(index + 1);
+  }
+
+  function isLuhn(value) {
+    if (value.length !== 16) return false;
+
+    let nCheck = 0, nDigit = 0, bEven = false;
+    value = value.replace(/\D/g, '');
+
+    for (let n = value.length - 1; n >= 0; n--) {
+      const cDigit = value.charAt(n);
+      nDigit = parseInt(cDigit, 10);
+
+      if (bEven) {
+        if ((nDigit *= 2) > 9) nDigit -= 9;
+      }
+
+      nCheck += nDigit;
+      bEven = !bEven;
+    }
+
+    return (nCheck % 10) === 0;
+  }
+
+  function broot(number) {
+    const nums = [];
+    if (number.includes('x')) {
+      for (let a = 0; a <= 9; a++) {
+        const newNumber = setCharAt(number, number.indexOf('x'), a);
+        if (isLuhn(newNumber) && !newNumber.includes('x')) {
+          nums.push(newNumber);
+        }
+        broot(newNumber);
+      }
+    }
+    bot.reply(nums.join('\n'));
+  }
+
+  const input = ctx.message.text.split(' ').slice(1).join(' ');
+  broot(input);
+});
+
 // <- Мелкие, бесполезные команды начинаются здесь ->
 bot.hears(/^[fф]$/i, ctx => {
   ctx.reply('F');
