@@ -313,8 +313,10 @@ bot.command('document', ctx => {
 });
 
 bot.command('donate', ctx => {
-  ctx.reply('Сервер бесплатный, лучше задонать деткам:\n' +
-    'https://pomogaem.com.ua/help/healthy/');
+  ctx.reply(
+    'Сервер бесплатный, лучше <a href="https://send.monobank.ua/jar/9XJBwEDntv">задонать деткам</a>!',
+    { parse_mode: 'HTML', disable_web_page_preview: true }
+  );
 });
 
 bot.command('thispersondoesnotexist', ctx => {
