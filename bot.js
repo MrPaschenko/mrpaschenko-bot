@@ -314,7 +314,7 @@ bot.command('document', ctx => {
 
 bot.command('donate', ctx => {
   ctx.reply(
-    'Сервер бесплатный, лучше <a href="https://send.monobank.ua/jar/9XJBwEDntv">задонать деткам</a>!',
+    'Можешь <a href="https://send.monobank.ua/jar/9XJBwEDntv">кинуть</a> разработчику на сервер, но это необязательно :)',
     { parse_mode: 'HTML', disable_web_page_preview: true }
   );
 });
