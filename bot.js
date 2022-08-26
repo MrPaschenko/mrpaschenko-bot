@@ -313,7 +313,7 @@ bot.command('document', ctx => {
 });
 
 bot.command('donate', ctx => {
-  ctx.reply('Можешь кинуть разработчику на сервер, но это необязательно :)' +
+  ctx.reply('Можешь кинуть разработчику на сервер, но это необязательно :)\n' +
     'https://send.monobank.ua/jar/A6zJ34EjH5');
 });
 
