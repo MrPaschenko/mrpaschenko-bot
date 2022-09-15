@@ -3,33 +3,38 @@
 [Simple telegram bot](https://t.me/MrPaschenko_bot)  
 [Доступна русская версия](https://github.com/MrPaschenko/mrpaschenko-bot/blob/master/README-RU.md)
 
-## Setup
+## Download & Run
 
-### 1. Install all necessary modules via npm:
+1. Install all necessary packages
+
 ```bash
 $ npm install
 ```
 
-### 2. Set up a configuration file
+2. Set up a configuration file
+
 Configuration file should be named as `.env`, example is named as `.env.example`
 
-### 3. Start: 
+3. Run
+
 ```bash
 $ node bot.js
 ```
+
 or
+
 ```bash
 $ npm start
 ```
 
-## Commands:
+## Available commands
 
 ### Request to [Wolfram|Alpha](https://www.wolframalpha.com/) with simple answer
 ```
 /wa <request>
 ```
 
-### Same but full answer with picture
+### Same, but full answer with picture
 ```
 /wa_full <request>
 ```
@@ -49,4 +54,4 @@ $ npm start
 /od_audio <request>
 ```
 
-_You can also make a request by replying to other message_
+>You can also make any request by replying to other message
