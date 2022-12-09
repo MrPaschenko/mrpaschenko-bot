@@ -258,15 +258,6 @@ bot.command('send', ctx => {
   }
 });
 
-bot.command('document', ctx => {
-  if (ctx.message.reply_to_message.text) {
-    ctx.replyWithDocument({ url: ctx.message.reply_to_message.text })
-      .catch(e => {
-        ctx.replyWithMarkdown(`_${e.message}_`);
-      });
-  }
-});
-
 bot.command('donate', ctx => {
   ctx.reply('Буду вдячний за копійку 🙃\n' +
     'https://send.monobank.ua/jar/A6zJ34EjH5');
