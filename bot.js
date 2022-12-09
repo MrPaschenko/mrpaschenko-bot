@@ -15,10 +15,10 @@ bot.start(ctx => {
 });
 
 bot.help(ctx => {
-  ctx.reply('/wa - запит Wolfram Alpha\n' +
+  ctx.reply('/wa - Запит Wolfram Alpha\n' +
     '/wa_full - Теж саме, але із повною відповіддю (картинкою)\n' +
-    '/ud - запит Urban Dictionary\n' +
-    '/od - запит Oxford Dictionary\n' +
+    '/ud - Запит Urban Dictionary\n' +
+    '/od - Запит Oxford Dictionary\n' +
     '/od_audio - Озвучка слова звідти ж\n' +
     '/help - Список команд\n' +
     '/donate - Підтримати автора\n');
