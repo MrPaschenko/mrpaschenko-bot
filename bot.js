@@ -10,18 +10,18 @@ const bot = new Telegraf(process.env.TOKEN);
 const waApi = new WolframAlphaAPI(process.env.WOLFRAM);
 
 bot.start(ctx => {
-  ctx.reply('Привет!\n' +
-    'Посмотри список команд либо отправь /help, чтобы узнать, что я умею');
+  ctx.reply('Привіт!\n' +
+    'Подивись список команд або відправ /help, щоб дізнатись, що я вмію');
 });
 
 bot.help(ctx => {
-  ctx.reply('/wa - Wolfram Alpha запрос\n' +
-    '/wa_full - То же самое, но с полным ответом картинкой\n' +
-    '/ud - Urban Dictionary запрос\n' +
-    '/od - Oxford Dictionary запрос\n' +
-    '/od_audio - Озвучка слова оттуда же\n' +
+  ctx.reply('/wa - запит Wolfram Alpha\n' +
+    '/wa_full - Теж саме, але із повною відповіддю (картинкою)\n' +
+    '/ud - запит Urban Dictionary\n' +
+    '/od - запит Oxford Dictionary\n' +
+    '/od_audio - Озвучка слова звідти ж\n' +
     '/help - Список команд\n' +
-    '/donate - Кинуть автору на хостинг)\n');
+    '/donate - Підтримати автора\n');
 });
 
 bot.command('wa', async ctx => {
@@ -34,7 +34,7 @@ bot.command('wa', async ctx => {
     } catch (err) {
       if (err.message.includes('No short answer available')) {
         try {
-          await ctx.reply('Короткий вариант недоступен, кидаю фотку');
+          await ctx.reply('Короткий варіант недоступний, відправляю картинку');
           const result = await waApi.getSimple(request); // URI (with suffix)
           const base64 = result.toString().replace(/^.{22}/, '');
           await ctx.replyWithPhoto({ source: Buffer.from(base64, 'base64') });
@@ -48,8 +48,8 @@ bot.command('wa', async ctx => {
   if (!input && ctx.message.reply_to_message) {
     await wa(ctx.message.reply_to_message.text);
   } else if (!input) {
-    ctx.reply('Введи запрос после команды или ' +
-      'отправь команду в ответ на сообщение');
+    ctx.reply('Уведи запит після команди або ' +
+      'відправ команду у відповідь на повідомлення');
   } else {
     await wa(input);
   }
@@ -72,8 +72,8 @@ bot.command('wa_full', async ctx => {
     const request = ctx.message.reply_to_message.text;
     await waFull(request);
   } else if (!input) {
-    ctx.reply('Введи запрос после команды или ' +
-      'отправь команду в ответ на сообщение');
+    ctx.reply('Уведи запит після команди або ' +
+      'відправ команду у відповідь на повідомлення');
   } else {
     await waFull(input);
   }
@@ -87,7 +87,7 @@ bot.command('ud', async ctx => {
       https.get(`https://api.urbandictionary.com/v0/define?term=${request}`, res => {
         if (res.statusCode !== 200) {
           const { statusCode, statusMessage } = res;
-          ctx.replyWithMarkdown('Ничего не найдено\n' +
+          ctx.replyWithMarkdown('Нічого не знайдено\n' +
             `_(Status Code: ${statusCode} ${statusMessage})_`);
           return;
         }
@@ -100,17 +100,17 @@ bot.command('ud', async ctx => {
         res.on('end', () => {
           const parsed = JSON.parse(body);
           if (!parsed.list[0]) {
-            ctx.reply('Ничего не найдено');
+            ctx.reply('Нічого не знайдено');
             return;
           }
-          ctx.replyWithMarkdown('*Определение:*\n' +
+          ctx.replyWithMarkdown('*Визначення:*\n' +
             `${parsed.list[0].definition}\n` +
-            '\n*Пример использования:*\n' +
+            '\n*Приклад використання:*\n' +
             `${parsed.list[0].example}`);
         });
       });
     } catch (e) {
-      ctx.replyWithMarkdown('Ничего не найдено\n' +
+      ctx.replyWithMarkdown('Нічого не знайдено\n' +
         `_(${e.message})_`);
     }
   }
@@ -118,8 +118,8 @@ bot.command('ud', async ctx => {
   if (!input && ctx.message.reply_to_message) {
     ud(ctx.message.reply_to_message.text);
   } else if (!input) {
-    ctx.reply('Введи запрос после команды или ' +
-      'отправь команду в ответ на сообщение');
+    ctx.reply('Уведи запит після команди або ' +
+      'відправ команду у відповідь на повідомлення');
   } else {
     await ud(input);
   }
@@ -144,7 +144,7 @@ bot.command('od', async ctx => {
       https.get(options, res => {
         if (res.statusCode !== 200) {
           const { statusCode, statusMessage } = res;
-          ctx.replyWithMarkdown('Ничего не найдено\n' +
+          ctx.replyWithMarkdown('Нічого не знайдено\n' +
             `_(Status Code: ${statusCode} ${statusMessage})_`);
           return;
         }
@@ -159,14 +159,14 @@ bot.command('od', async ctx => {
           const main = parsed.results[0].lexicalEntries[0].entries[0].senses[0];
           let examples = '';
           if (main.examples) {
-            examples = `\n*Пример использования:*\n${main.examples[0].text}`;
+            examples = `\n*Приклад використання:*\n${main.examples[0].text}`;
           }
-          ctx.replyWithMarkdown('*Определение:*\n' +
+          ctx.replyWithMarkdown('*Визначення:*\n' +
             `${main.definitions[0]}\n` + examples);
         });
       });
     } catch (e) {
-      ctx.replyWithMarkdown('Ничего не найдено\n' +
+      ctx.replyWithMarkdown('Нічого не знайдено\n' +
         `_(${e.message})_`);
     }
   }
@@ -175,8 +175,8 @@ bot.command('od', async ctx => {
     const input = ctx.message.reply_to_message.text;
     od(input);
   } else if (!input) {
-    ctx.reply('Введи запрос после команды или ' +
-      'отправь команду в ответ на сообщение');
+    ctx.reply('Уведи запит після команди або ' +
+      'відправ команду у відповідь на повідомлення');
   } else {
     od(input);
   }
@@ -206,7 +206,7 @@ bot.command('od_audio', ctx => {
       https.get(options, res => {
         if (res.statusCode !== 200) {
           const { statusCode, statusMessage } = res;
-          ctx.replyWithMarkdown('Ничего не найдено\n' +
+          ctx.replyWithMarkdown('Нічого не знайдено\n' +
             `_(Status Code: ${statusCode} ${statusMessage})_`);
           return;
         }
@@ -224,7 +224,7 @@ bot.command('od_audio', ctx => {
         });
       });
     } catch (e) {
-      ctx.replyWithMarkdown('Ничего не найдено\n' +
+      ctx.replyWithMarkdown('Нічого не знайдено\n' +
         `_(${e.message})_`);
     }
   }
@@ -233,8 +233,8 @@ bot.command('od_audio', ctx => {
     const reply = ctx.message.reply_to_message.text;
     odAudio(reply);
   } else if (!message) {
-    ctx.reply('Введи запрос после команды или ' +
-      'отправь команду в ответ на сообщение');
+    ctx.reply('Уведи запит після команди або ' +
+      'відправ команду у відповідь на повідомлення');
   } else odAudio(message);
 });
 
@@ -283,7 +283,7 @@ bot.command('broot', ctx => {
   broot(input);
 });
 
-// <- Мелкие, бесполезные команды начинаются здесь ->
+// <- Useless functions are here ->
 bot.hears(/^[fф]$/i, ctx => {
   ctx.reply('F');
 });
@@ -313,7 +313,7 @@ bot.command('document', ctx => {
 });
 
 bot.command('donate', ctx => {
-  ctx.reply('Можешь кинуть разработчику на сервер, но это необязательно :)\n' +
+  ctx.reply('Буду вдячний за копійку 🙃\n' +
     'https://send.monobank.ua/jar/A6zJ34EjH5');
 });
 
@@ -334,9 +334,8 @@ bot.command('thiswaifudoesnotexist', ctx => {
 });
 
 bot.command('ping', ctx => {
-  ctx.reply('i\'m here');
+  ctx.reply('🏓 Я тут');
 });
-// <- Мелкие, бесполезные команды заканчиваются здесь ->
 
 // Для пересылки сообщений с ссылками на пары
 bot.on('channel_post', ctx => {
