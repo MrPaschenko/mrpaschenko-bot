@@ -337,12 +337,4 @@ bot.command('ping', ctx => {
   ctx.reply('🏓 Я тут');
 });
 
-// Для пересылки сообщений с ссылками на пары
-bot.on('channel_post', ctx => {
-  const senderChatId = ctx.update.channel_post.sender_chat.id;
-  if (senderChatId === parseInt(process.env.CHANNEL)) {
-    ctx.forwardMessage(process.env.GROUP);
-  }
-});
-
 bot.launch().then(() => console.log('Bot has successfully started!'));
