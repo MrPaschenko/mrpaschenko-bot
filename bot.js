@@ -1,13 +1,12 @@
 'use strict';
 
+const { wa } = require('./wa');
 const https = require('https');
 const { Telegraf } = require('telegraf');
-const WolframAlphaAPI = require('wolfram-alpha-api');
 
 require('dotenv').config();
 
 const bot = new Telegraf(process.env.TOKEN);
-const waApi = new WolframAlphaAPI(process.env.WOLFRAM);
 
 bot.start(ctx => {
   ctx.reply('Привіт!\n' +
@@ -27,31 +26,35 @@ bot.help(ctx => {
 bot.command('wa', async ctx => {
   const input = ctx.message.text.split(' ').slice(1).join(' ');
 
-  async function wa(request) {
-    try {
-      const result = await waApi.getShort(request);
-      await ctx.reply(result);
-    } catch (err) {
-      if (err.message.includes('No short answer available')) {
-        try {
-          await ctx.reply('Короткий варіант недоступний, відправляю картинку');
-          const result = await waApi.getSimple(request); // URI (with suffix)
-          const base64 = result.toString().replace(/^.{22}/, '');
-          await ctx.replyWithPhoto({ source: Buffer.from(base64, 'base64') });
-        } catch (err) {
-          await ctx.reply(err.message);
-        }
-      } else await ctx.reply(err.message);
+  let response;
+
+  if (!input) {
+    if (ctx.message.reply_to_message) {
+      response = await wa(ctx.message.reply_to_message.text);
+    } else {
+      ctx.reply(
+        'Уведи запит після команди або ' +
+        'відправ команду у відповідь на повідомлення',
+        // eslint-disable-next-line camelcase
+        { reply_to_message_id: ctx.message.message_id }
+      );
     }
+  } else {
+    response = await wa(input);
   }
 
-  if (!input && ctx.message.reply_to_message) {
-    await wa(ctx.message.reply_to_message.text);
-  } else if (!input) {
-    ctx.reply('Уведи запит після команди або ' +
-      'відправ команду у відповідь на повідомлення');
-  } else {
-    await wa(input);
+  const { text, photo } = response;
+
+  if (text) {
+    await ctx.reply(text,
+      // eslint-disable-next-line camelcase
+      { reply_to_message_id: ctx.message.message_id });
+  }
+
+  if (photo) {
+    await ctx.replyWithPhoto({ source: photo },
+      // eslint-disable-next-line camelcase
+      { reply_to_message_id: ctx.message.message_id });
   }
 });
 
