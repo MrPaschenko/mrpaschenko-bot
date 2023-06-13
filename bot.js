@@ -1,6 +1,6 @@
 'use strict';
 
-const { wa } = require('./wa');
+const { wa, waFull } = require('./wa');
 const https = require('https');
 const { Telegraf } = require('telegraf');
 
@@ -61,24 +61,35 @@ bot.command('wa', async ctx => {
 bot.command('wa_full', async ctx => {
   const input = ctx.message.text.split(' ').slice(1).join(' ');
 
-  async function waFull(request) {
-    try {
-      const result = await waApi.getSimple(request); // URI (with suffix)
-      const base64 = result.toString().replace(/^.{22}/, '');
-      await ctx.replyWithPhoto({ source: Buffer.from(base64, 'base64') });
-    } catch (err) {
-      await ctx.reply(err.message);
+  let response;
+
+  if (!input) {
+    if (ctx.message.reply_to_message) {
+      response = await waFull(ctx.message.reply_to_message.text);
+    } else {
+      ctx.reply(
+        'Уведи запит після команди або ' +
+        'відправ команду у відповідь на повідомлення',
+        // eslint-disable-next-line camelcase
+        { reply_to_message_id: ctx.message.message_id }
+      );
     }
+  } else {
+    response = await waFull(input);
   }
 
-  if (!input && ctx.message.reply_to_message) {
-    const request = ctx.message.reply_to_message.text;
-    await waFull(request);
-  } else if (!input) {
-    ctx.reply('Уведи запит після команди або ' +
-      'відправ команду у відповідь на повідомлення');
-  } else {
-    await waFull(input);
+  const { text, photo } = response;
+
+  if (text) {
+    await ctx.reply(text,
+      // eslint-disable-next-line camelcase
+      { reply_to_message_id: ctx.message.message_id });
+  }
+
+  if (photo) {
+    await ctx.replyWithPhoto({ source: photo },
+      // eslint-disable-next-line camelcase
+      { reply_to_message_id: ctx.message.message_id });
   }
 });
 
