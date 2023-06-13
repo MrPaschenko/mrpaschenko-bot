@@ -121,7 +121,7 @@ bot.command('ud', async ctx => {
     ctx.reply('Уведи запит після команди або ' +
       'відправ команду у відповідь на повідомлення');
   } else {
-    await ud(input);
+    ud(input);
   }
 });
 
