@@ -16,7 +16,7 @@ bot.start(ctx => {
 
 bot.help(ctx => {
   ctx.reply('/wa - Запит Wolfram Alpha\n' +
-    '/wa_full - Теж саме, але із повною відповіддю (картинкою)\n' +
+    '/wa_full - Те ж саме, але із повною відповіддю (картинкою)\n' +
     '/ud - Запит Urban Dictionary\n' +
     '/od - Запит Oxford Dictionary\n' +
     '/od_audio - Озвучка слова звідти ж\n' +
