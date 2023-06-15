@@ -38,6 +38,8 @@ bot.command('wa', async ctx => {
         // eslint-disable-next-line camelcase
         { reply_to_message_id: ctx.message.message_id }
       );
+
+      return;
     }
   } else {
     response = await wa(input);
@@ -73,6 +75,8 @@ bot.command('wa_full', async ctx => {
         // eslint-disable-next-line camelcase
         { reply_to_message_id: ctx.message.message_id }
       );
+
+      return;
     }
   } else {
     response = await waFull(input);
@@ -259,7 +263,9 @@ bot.hears(/^[fф]$/i, ctx => {
 
 bot.on('location', ctx => {
   ctx.reply(`${ctx.message.location.latitude}\n` +
-    `${ctx.message.location.longitude}`);
+    `${ctx.message.location.longitude}`,
+    // eslint-disable-next-line camelcase
+    { reply_to_message_id: ctx.message.message_id });
   console.log(ctx.message.location);
 });
 
@@ -274,15 +280,22 @@ bot.command('send', ctx => {
 
 bot.command('donate', ctx => {
   ctx.reply('Буду вдячний за копійку 🙃\n' +
-    'https://send.monobank.ua/jar/A6zJ34EjH5');
+    'https://send.monobank.ua/jar/A6zJ34EjH5',
+    // eslint-disable-next-line camelcase
+    { reply_to_message_id: ctx.message.message_id });
 });
 
 bot.command('thispersondoesnotexist', ctx => {
-  ctx.replyWithPhoto({ url: 'https://thispersondoesnotexist.com/image' });
+  ctx.replyWithPhoto({ url: 'https://thispersondoesnotexist.com/' },
+    // eslint-disable-next-line camelcase
+    { reply_to_message_id: ctx.message.message_id })
+    .catch(e => { ctx.reply(e.message); });
 });
 
 bot.command('thiscatdoesnotexist', ctx => {
-  ctx.replyWithPhoto({ url: 'https://thiscatdoesnotexist.com/' });
+  ctx.replyWithPhoto({ url: 'https://thiscatdoesnotexist.com/' },
+    // eslint-disable-next-line camelcase
+    { reply_to_message_id: ctx.message.message_id });
 });
 
 bot.command('thiswaifudoesnotexist', ctx => {
@@ -290,11 +303,15 @@ bot.command('thiswaifudoesnotexist', ctx => {
   ctx.replyWithPhoto({
     url:
       `https://www.thiswaifudoesnotexist.net/example-${randomNumber()}${randomNumber()}${randomNumber()}${randomNumber()}${randomNumber()}.jpg`
-  }).catch(e => { ctx.reply(e.message); });
+    // eslint-disable-next-line camelcase
+  }, { reply_to_message_id: ctx.message.message_id })
+    .catch(e => { ctx.reply(e.message); });
 });
 
 bot.command('ping', ctx => {
-  ctx.reply('🏓 Я тут');
+  ctx.reply('🏓 Я тут',
+    // eslint-disable-next-line camelcase
+    { reply_to_message_id: ctx.message.message_id });
 });
 
 bot.launch().then(() => console.log('Bot has successfully started!'));
