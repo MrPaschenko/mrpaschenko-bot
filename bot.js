@@ -106,7 +106,9 @@ bot.command('ud', async ctx => {
         if (res.statusCode !== 200) {
           const { statusCode, statusMessage } = res;
           ctx.replyWithMarkdown('Нічого не знайдено\n' +
-            `_(Status Code: ${statusCode} ${statusMessage})_`);
+            `_(Status Code: ${statusCode} ${statusMessage})_`,
+            // eslint-disable-next-line camelcase
+            { reply_to_message_id: ctx.message.message_id });
           return;
         }
 
@@ -118,18 +120,24 @@ bot.command('ud', async ctx => {
         res.on('end', () => {
           const parsed = JSON.parse(body);
           if (!parsed.list[0]) {
-            ctx.reply('Нічого не знайдено');
+            ctx.reply('Нічого не знайдено',
+              // eslint-disable-next-line camelcase
+              { reply_to_message_id: ctx.message.message_id });
             return;
           }
           ctx.replyWithMarkdown('*Визначення:*\n' +
             `${parsed.list[0].definition}\n` +
             '\n*Приклад використання:*\n' +
-            `${parsed.list[0].example}`);
+            `${parsed.list[0].example}`,
+            // eslint-disable-next-line camelcase
+            { reply_to_message_id: ctx.message.message_id });
         });
       });
     } catch (e) {
       ctx.replyWithMarkdown('Нічого не знайдено\n' +
-        `_(${e.message})_`);
+        `_(${e.message})_`,
+        // eslint-disable-next-line camelcase
+        { reply_to_message_id: ctx.message.message_id });
     }
   }
 
@@ -137,7 +145,9 @@ bot.command('ud', async ctx => {
     ud(ctx.message.reply_to_message.text);
   } else if (!input) {
     ctx.reply('Уведи запит після команди або ' +
-      'відправ команду у відповідь на повідомлення');
+      'відправ команду у відповідь на повідомлення',
+      // eslint-disable-next-line camelcase
+      { reply_to_message_id: ctx.message.message_id });
   } else {
     ud(input);
   }
