@@ -198,8 +198,9 @@ bot.command('send', ctx => {
   const input = ctx.message.text.split(' ').slice(1).join(' ');
 
   if (ctx.message.chat.id === parseInt(process.env.ME)) {
-    ctx.telegram.sendMessage(process.env.GROUP, input)
-      .catch(e => { ctx.reply(e.message); });
+    ctx.telegram.sendMessage(process.env.GROUP, input).then(r => {
+      ctx.reply('Надіслано');
+    });
   }
 });
 
@@ -207,15 +208,18 @@ bot.command('donate', ctx => {
   // eslint-disable-next-line camelcase
   const replyOptions = { reply_to_message_id: ctx.message.message_id };
 
-  ctx.reply('Буду вдячний за копійку 🙃\n' +
-    'https://send.monobank.ua/jar/A6zJ34EjH5', replyOptions);
+  const url = 'https://send.monobank.ua/jar/A6zJ34EjH5';
+
+  ctx.reply('Буду вдячний за копійку 🙃\n' + url, replyOptions);
 });
 
 bot.command('thispersondoesnotexist', ctx => {
   // eslint-disable-next-line camelcase
   const replyOptions = { reply_to_message_id: ctx.message.message_id };
 
-  ctx.replyWithPhoto({ url: 'https://thispersondoesnotexist.com/' }, replyOptions)
+  const url = 'https://thispersondoesnotexist.com/';
+
+  ctx.replyWithPhoto(url, replyOptions)
     .catch(e => { ctx.reply(e.message); });
 });
 
@@ -223,7 +227,10 @@ bot.command('thiscatdoesnotexist', ctx => {
   // eslint-disable-next-line camelcase
   const replyOptions = { reply_to_message_id: ctx.message.message_id };
 
-  ctx.replyWithPhoto({ url: 'https://thiscatdoesnotexist.com/' }, replyOptions);
+  const url = 'https://thiscatdoesnotexist.com/';
+
+  ctx.replyWithPhoto(url, replyOptions)
+    .catch(e => { ctx.reply(e.message); });
 });
 
 bot.command('thiswaifudoesnotexist', ctx => {
@@ -231,11 +238,11 @@ bot.command('thiswaifudoesnotexist', ctx => {
   const replyOptions = { reply_to_message_id: ctx.message.message_id };
 
   const randomNumber = () => Math.floor(Math.random() * 10);
-  ctx.replyWithPhoto({
-    url:
-      `https://www.thiswaifudoesnotexist.net/example-${randomNumber()}${randomNumber()}${randomNumber()}${randomNumber()}${randomNumber()}.jpg`
-  }, replyOptions
-    .catch(e => { ctx.reply(e.message); }));
+  const number = Array.from({ length: 5 }, () => randomNumber()).join('');
+  const url = `https://www.thiswaifudoesnotexist.net/example-${number}.jpg`;
+
+  ctx.replyWithPhoto(url, replyOptions)
+    .catch(e => { ctx.reply(e.message); });
 });
 
 bot.command('ping', ctx => {
