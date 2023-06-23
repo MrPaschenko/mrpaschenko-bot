@@ -2,6 +2,7 @@
 
 const { wa, waFull } = require('./wa');
 const { ud } = require('./ud');
+const { od, odAudio } = require('./od');
 const https = require('https');
 const { Telegraf } = require('telegraf');
 
@@ -129,57 +130,26 @@ bot.command('od', async ctx => {
   // eslint-disable-next-line camelcase
   const replyOptions = { reply_to_message_id: ctx.message.message_id };
 
-  function od(request) {
-    const options = {
-      host: 'od-api.oxforddictionaries.com',
-      port: '443',
-      path: `/api/v2/entries/en-us/${request}`,
-      method: 'GET',
-      headers: {
-        'app_id': process.env.APP_ID,
-        'app_key': process.env.APP_KEY,
-      }
-    };
-
-    try {
-      https.get(options, res => {
-        if (res.statusCode !== 200) {
-          const { statusCode, statusMessage } = res;
-          ctx.replyWithMarkdown('Нічого не знайдено\n' +
-            `_(Status Code: ${statusCode} ${statusMessage})_`, replyOptions);
-          return;
-        }
-
-        let body = '';
-        res.on('data', chunk => {
-          body += chunk.toString();
-        });
-
-        res.on('end', () => {
-          const parsed = JSON.parse(body);
-          const main = parsed.results[0].lexicalEntries[0].entries[0].senses[0];
-          let examples = '';
-          if (main.examples) {
-            examples = `\n*Приклад використання:*\n${main.examples[0].text}`;
-          }
-          ctx.replyWithMarkdown('*Визначення:*\n' +
-            `${main.definitions[0]}\n` + examples, replyOptions);
-        });
-      });
-    } catch (e) {
-      ctx.replyWithMarkdown('Нічого не знайдено\n' +
-        `_(${e.message})_`, replyOptions);
+  function callback(err, response) {
+    if (err) {
+      ctx.replyWithMarkdown(err.message, replyOptions);
+    } else {
+      ctx.replyWithMarkdown(response, replyOptions);
     }
   }
 
-  if (!input && ctx.message.reply_to_message) {
-    const input = ctx.message.reply_to_message.text;
-    od(input);
-  } else if (!input) {
-    ctx.reply('Уведи запит після команди або ' +
-      'відправ команду у відповідь на повідомлення', replyOptions);
+  if (!input) {
+    if (ctx.message.reply_to_message) {
+      od(ctx.message.reply_to_message.text, callback);
+    } else {
+      ctx.reply(
+        'Уведи запит після команди або ' +
+        'відправ команду у відповідь на повідомлення',
+        replyOptions
+      );
+    }
   } else {
-    od(input);
+    od(input, callback);
   }
 });
 
