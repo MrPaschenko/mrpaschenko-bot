@@ -13,6 +13,7 @@ function ud(request, callback) {
       response = 'Нічого не знайдено\n' +
           `_(Status Code: ${statusCode} ${statusMessage})_`;
       callback(new Error(response));
+      return;
     }
 
     let body = '';
