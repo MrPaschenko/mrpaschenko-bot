@@ -3,7 +3,6 @@
 const { wa, waFull } = require('./wa');
 const { ud } = require('./ud');
 const { od, odAudio } = require('./od');
-const https = require('https');
 const { Telegraf } = require('telegraf');
 
 require('dotenv').config();
