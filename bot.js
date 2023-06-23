@@ -1,6 +1,7 @@
 'use strict';
 
 const { wa, waFull } = require('./wa');
+const { ud } = require('./ud');
 const https = require('https');
 const { Telegraf } = require('telegraf');
 
@@ -100,56 +101,31 @@ bot.command('wa_full', async ctx => {
 bot.command('ud', async ctx => {
   const input = ctx.message.text.split(' ').slice(1).join(' ');
 
-  function ud(request) {
-    try {
-      https.get(`https://api.urbandictionary.com/v0/define?term=${request}`, res => {
-        if (res.statusCode !== 200) {
-          const { statusCode, statusMessage } = res;
-          ctx.replyWithMarkdown('Нічого не знайдено\n' +
-            `_(Status Code: ${statusCode} ${statusMessage})_`,
-            // eslint-disable-next-line camelcase
-            { reply_to_message_id: ctx.message.message_id });
-          return;
-        }
-
-        let body = '';
-        res.on('data', chunk => {
-          body += chunk.toString();
-        });
-
-        res.on('end', () => {
-          const parsed = JSON.parse(body);
-          if (!parsed.list[0]) {
-            ctx.reply('Нічого не знайдено',
-              // eslint-disable-next-line camelcase
-              { reply_to_message_id: ctx.message.message_id });
-            return;
-          }
-          ctx.replyWithMarkdown('*Визначення:*\n' +
-            `${parsed.list[0].definition}\n` +
-            '\n*Приклад використання:*\n' +
-            `${parsed.list[0].example}`,
-            // eslint-disable-next-line camelcase
-            { reply_to_message_id: ctx.message.message_id });
-        });
-      });
-    } catch (e) {
-      ctx.replyWithMarkdown('Нічого не знайдено\n' +
-        `_(${e.message})_`,
+  function callback(err, response) {
+    if (err) {
+      ctx.replyWithMarkdown(err.message,
+        // eslint-disable-next-line camelcase
+        { reply_to_message_id: ctx.message.message_id });
+    } else {
+      ctx.replyWithMarkdown(response,
         // eslint-disable-next-line camelcase
         { reply_to_message_id: ctx.message.message_id });
     }
   }
 
-  if (!input && ctx.message.reply_to_message) {
-    ud(ctx.message.reply_to_message.text);
-  } else if (!input) {
-    ctx.reply('Уведи запит після команди або ' +
-      'відправ команду у відповідь на повідомлення',
-      // eslint-disable-next-line camelcase
-      { reply_to_message_id: ctx.message.message_id });
+  if (!input) {
+    if (ctx.message.reply_to_message) {
+      ud(ctx.message.reply_to_message.text, callback);
+    } else {
+      ctx.reply(
+        'Уведи запит після команди або ' +
+        'відправ команду у відповідь на повідомлення',
+        // eslint-disable-next-line camelcase
+        { reply_to_message_id: ctx.message.message_id }
+      );
+    }
   } else {
-    ud(input);
+    ud(input, callback);
   }
 });
 
