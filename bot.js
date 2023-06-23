@@ -27,6 +27,9 @@ bot.help(ctx => {
 bot.command('wa', async ctx => {
   const input = ctx.message.text.split(' ').slice(1).join(' ');
 
+  // eslint-disable-next-line camelcase
+  const replyOptions = { reply_to_message_id: ctx.message.message_id };
+
   let response;
 
   if (!input) {
@@ -36,8 +39,7 @@ bot.command('wa', async ctx => {
       ctx.reply(
         'Уведи запит після команди або ' +
         'відправ команду у відповідь на повідомлення',
-        // eslint-disable-next-line camelcase
-        { reply_to_message_id: ctx.message.message_id }
+        replyOptions
       );
 
       return;
@@ -49,20 +51,19 @@ bot.command('wa', async ctx => {
   const { text, photo } = response;
 
   if (text) {
-    await ctx.reply(text,
-      // eslint-disable-next-line camelcase
-      { reply_to_message_id: ctx.message.message_id });
+    await ctx.reply(text, replyOptions);
   }
 
   if (photo) {
-    await ctx.replyWithPhoto({ source: photo },
-      // eslint-disable-next-line camelcase
-      { reply_to_message_id: ctx.message.message_id });
+    await ctx.replyWithPhoto({ source: photo }, replyOptions);
   }
 });
 
 bot.command('wa_full', async ctx => {
   const input = ctx.message.text.split(' ').slice(1).join(' ');
+
+  // eslint-disable-next-line camelcase
+  const replyOptions = { reply_to_message_id: ctx.message.message_id };
 
   let response;
 
@@ -73,8 +74,7 @@ bot.command('wa_full', async ctx => {
       ctx.reply(
         'Уведи запит після команди або ' +
         'відправ команду у відповідь на повідомлення',
-        // eslint-disable-next-line camelcase
-        { reply_to_message_id: ctx.message.message_id }
+        replyOptions
       );
 
       return;
@@ -86,30 +86,25 @@ bot.command('wa_full', async ctx => {
   const { text, photo } = response;
 
   if (text) {
-    await ctx.reply(text,
-      // eslint-disable-next-line camelcase
-      { reply_to_message_id: ctx.message.message_id });
+    await ctx.reply(text, replyOptions);
   }
 
   if (photo) {
-    await ctx.replyWithPhoto({ source: photo },
-      // eslint-disable-next-line camelcase
-      { reply_to_message_id: ctx.message.message_id });
+    await ctx.replyWithPhoto({ source: photo }, replyOptions);
   }
 });
 
 bot.command('ud', async ctx => {
   const input = ctx.message.text.split(' ').slice(1).join(' ');
 
+  // eslint-disable-next-line camelcase
+  const replyOptions = { reply_to_message_id: ctx.message.message_id };
+
   function callback(err, response) {
     if (err) {
-      ctx.replyWithMarkdown(err.message,
-        // eslint-disable-next-line camelcase
-        { reply_to_message_id: ctx.message.message_id });
+      ctx.replyWithMarkdown(err.message, replyOptions);
     } else {
-      ctx.replyWithMarkdown(response,
-        // eslint-disable-next-line camelcase
-        { reply_to_message_id: ctx.message.message_id });
+      ctx.replyWithMarkdown(response, replyOptions);
     }
   }
 
@@ -120,8 +115,7 @@ bot.command('ud', async ctx => {
       ctx.reply(
         'Уведи запит після команди або ' +
         'відправ команду у відповідь на повідомлення',
-        // eslint-disable-next-line camelcase
-        { reply_to_message_id: ctx.message.message_id }
+        replyOptions
       );
     }
   } else {
@@ -131,6 +125,9 @@ bot.command('ud', async ctx => {
 
 bot.command('od', async ctx => {
   const input = ctx.message.text.split(' ').slice(1).join(' ');
+
+  // eslint-disable-next-line camelcase
+  const replyOptions = { reply_to_message_id: ctx.message.message_id };
 
   function od(request) {
     const options = {
@@ -149,7 +146,7 @@ bot.command('od', async ctx => {
         if (res.statusCode !== 200) {
           const { statusCode, statusMessage } = res;
           ctx.replyWithMarkdown('Нічого не знайдено\n' +
-            `_(Status Code: ${statusCode} ${statusMessage})_`);
+            `_(Status Code: ${statusCode} ${statusMessage})_`, replyOptions);
           return;
         }
 
@@ -166,12 +163,12 @@ bot.command('od', async ctx => {
             examples = `\n*Приклад використання:*\n${main.examples[0].text}`;
           }
           ctx.replyWithMarkdown('*Визначення:*\n' +
-            `${main.definitions[0]}\n` + examples);
+            `${main.definitions[0]}\n` + examples, replyOptions);
         });
       });
     } catch (e) {
       ctx.replyWithMarkdown('Нічого не знайдено\n' +
-        `_(${e.message})_`);
+        `_(${e.message})_`, replyOptions);
     }
   }
 
@@ -180,7 +177,7 @@ bot.command('od', async ctx => {
     od(input);
   } else if (!input) {
     ctx.reply('Уведи запит після команди або ' +
-      'відправ команду у відповідь на повідомлення');
+      'відправ команду у відповідь на повідомлення', replyOptions);
   } else {
     od(input);
   }
@@ -189,9 +186,12 @@ bot.command('od', async ctx => {
 bot.command('od_audio', ctx => {
   const message = ctx.message.text.split(' ').slice(1).join(' ');
 
+  // eslint-disable-next-line camelcase
+  const replyOptions = { reply_to_message_id: ctx.message.message_id };
+
   function odAudio(request) {
     if (request === 'aboba') {
-      ctx.replyWithAudio('https://api.meowpad.me/v1/download/28034-aboba');
+      ctx.replyWithAudio('https://api.meowpad.me/v1/download/28034-aboba', replyOptions);
       return;
     }
 
@@ -211,7 +211,7 @@ bot.command('od_audio', ctx => {
         if (res.statusCode !== 200) {
           const { statusCode, statusMessage } = res;
           ctx.replyWithMarkdown('Нічого не знайдено\n' +
-            `_(Status Code: ${statusCode} ${statusMessage})_`);
+            `_(Status Code: ${statusCode} ${statusMessage})_`, replyOptions);
           return;
         }
 
@@ -224,12 +224,12 @@ bot.command('od_audio', ctx => {
           const parsed = JSON.parse(body);
           const audio = parsed.results[0].lexicalEntries[0].entries[0]
             .pronunciations[1].audioFile;
-          ctx.replyWithDocument(audio);
+          ctx.replyWithDocument(audio, replyOptions);
         });
       });
     } catch (e) {
       ctx.replyWithMarkdown('Нічого не знайдено\n' +
-        `_(${e.message})_`);
+        `_(${e.message})_`, replyOptions);
     }
   }
 
@@ -238,7 +238,7 @@ bot.command('od_audio', ctx => {
     odAudio(reply);
   } else if (!message) {
     ctx.reply('Уведи запит після команди або ' +
-      'відправ команду у відповідь на повідомлення');
+      'відправ команду у відповідь на повідомлення', replyOptions);
   } else odAudio(message);
 });
 
@@ -248,11 +248,11 @@ bot.hears(/^[fф]$/i, ctx => {
 });
 
 bot.on('location', ctx => {
+  // eslint-disable-next-line camelcase
+  const replyOptions = { reply_to_message_id: ctx.message.message_id };
+
   ctx.reply(`${ctx.message.location.latitude}\n` +
-    `${ctx.message.location.longitude}`,
-    // eslint-disable-next-line camelcase
-    { reply_to_message_id: ctx.message.message_id });
-  console.log(ctx.message.location);
+    `${ctx.message.location.longitude}`, replyOptions);
 });
 
 bot.command('send', ctx => {
@@ -265,39 +265,45 @@ bot.command('send', ctx => {
 });
 
 bot.command('donate', ctx => {
+  // eslint-disable-next-line camelcase
+  const replyOptions = { reply_to_message_id: ctx.message.message_id };
+
   ctx.reply('Буду вдячний за копійку 🙃\n' +
-    'https://send.monobank.ua/jar/A6zJ34EjH5',
-    // eslint-disable-next-line camelcase
-    { reply_to_message_id: ctx.message.message_id });
+    'https://send.monobank.ua/jar/A6zJ34EjH5', replyOptions);
 });
 
 bot.command('thispersondoesnotexist', ctx => {
-  ctx.replyWithPhoto({ url: 'https://thispersondoesnotexist.com/' },
-    // eslint-disable-next-line camelcase
-    { reply_to_message_id: ctx.message.message_id })
+  // eslint-disable-next-line camelcase
+  const replyOptions = { reply_to_message_id: ctx.message.message_id };
+
+  ctx.replyWithPhoto({ url: 'https://thispersondoesnotexist.com/' }, replyOptions)
     .catch(e => { ctx.reply(e.message); });
 });
 
 bot.command('thiscatdoesnotexist', ctx => {
-  ctx.replyWithPhoto({ url: 'https://thiscatdoesnotexist.com/' },
-    // eslint-disable-next-line camelcase
-    { reply_to_message_id: ctx.message.message_id });
+  // eslint-disable-next-line camelcase
+  const replyOptions = { reply_to_message_id: ctx.message.message_id };
+
+  ctx.replyWithPhoto({ url: 'https://thiscatdoesnotexist.com/' }, replyOptions);
 });
 
 bot.command('thiswaifudoesnotexist', ctx => {
+  // eslint-disable-next-line camelcase
+  const replyOptions = { reply_to_message_id: ctx.message.message_id };
+
   const randomNumber = () => Math.floor(Math.random() * 10);
   ctx.replyWithPhoto({
     url:
       `https://www.thiswaifudoesnotexist.net/example-${randomNumber()}${randomNumber()}${randomNumber()}${randomNumber()}${randomNumber()}.jpg`
-    // eslint-disable-next-line camelcase
-  }, { reply_to_message_id: ctx.message.message_id })
-    .catch(e => { ctx.reply(e.message); });
+  }, replyOptions
+    .catch(e => { ctx.reply(e.message); }));
 });
 
 bot.command('ping', ctx => {
-  ctx.reply('🏓 Я тут',
-    // eslint-disable-next-line camelcase
-    { reply_to_message_id: ctx.message.message_id });
+  // eslint-disable-next-line camelcase
+  const replyOptions = { reply_to_message_id: ctx.message.message_id };
+
+  ctx.reply('🏓 Я тут', replyOptions);
 });
 
 bot.launch().then(() => console.log('Bot has successfully started!'));
