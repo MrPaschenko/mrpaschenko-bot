@@ -25,13 +25,13 @@ function ud(request, callback) {
       if (!parsed.list[0]) {
         response = 'Нічого не знайдено';
         callback(new Error(response));
-      }
-
-      response = '*Визначення:*\n' +
+      } else {
+        response = '*Визначення:*\n' +
           `${parsed.list[0].definition}\n` +
           '\n*Приклад використання:*\n' +
           `${parsed.list[0].example}`;
-      callback(null, response);
+        callback(null, response);
+      }
     });
   });
 }
