@@ -154,62 +154,32 @@ bot.command('od', async ctx => {
 });
 
 bot.command('od_audio', ctx => {
-  const message = ctx.message.text.split(' ').slice(1).join(' ');
+  const input = ctx.message.text.split(' ').slice(1).join(' ');
 
   // eslint-disable-next-line camelcase
   const replyOptions = { reply_to_message_id: ctx.message.message_id };
 
-  function odAudio(request) {
-    if (request === 'aboba') {
-      ctx.replyWithAudio('https://api.meowpad.me/v1/download/28034-aboba', replyOptions);
-      return;
+  const callback = (err, response) => {
+    if (err) {
+      ctx.replyWithMarkdown(err.message, replyOptions);
+    } else {
+      ctx.replyWithVoice(response, replyOptions);
     }
+  };
 
-    const options = {
-      host: 'od-api.oxforddictionaries.com',
-      port: '443',
-      path: `/api/v2/entries/en-us/${request}`,
-      method: 'GET',
-      headers: {
-        'app_id': process.env.APP_ID,
-        'app_key': process.env.APP_KEY,
-      }
-    };
-
-    try {
-      https.get(options, res => {
-        if (res.statusCode !== 200) {
-          const { statusCode, statusMessage } = res;
-          ctx.replyWithMarkdown('Нічого не знайдено\n' +
-            `_(Status Code: ${statusCode} ${statusMessage})_`, replyOptions);
-          return;
-        }
-
-        let body = '';
-        res.on('data', chunk => {
-          body += chunk.toString();
-        });
-
-        res.on('end', () => {
-          const parsed = JSON.parse(body);
-          const audio = parsed.results[0].lexicalEntries[0].entries[0]
-            .pronunciations[1].audioFile;
-          ctx.replyWithDocument(audio, replyOptions);
-        });
-      });
-    } catch (e) {
-      ctx.replyWithMarkdown('Нічого не знайдено\n' +
-        `_(${e.message})_`, replyOptions);
+  if (!input) {
+    if (ctx.message.reply_to_message) {
+      odAudio(ctx.message.reply_to_message.text, callback);
+    } else {
+      ctx.reply(
+        'Уведи запит після команди або ' +
+        'відправ команду у відповідь на повідомлення',
+        replyOptions
+      );
     }
+  } else {
+    odAudio(input, callback);
   }
-
-  if (!message && ctx.message.reply_to_message) {
-    const reply = ctx.message.reply_to_message.text;
-    odAudio(reply);
-  } else if (!message) {
-    ctx.reply('Уведи запит після команди або ' +
-      'відправ команду у відповідь на повідомлення', replyOptions);
-  } else odAudio(message);
 });
 
 // <- Useless functions are here ->
