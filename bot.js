@@ -252,4 +252,27 @@ bot.command('ping', ctx => {
   ctx.reply('🏓 Я тут', replyOptions);
 });
 
+bot.command('latex', ctx => {
+  const input = ctx.message.text.split(' ').slice(1).join(' ');
+
+  // eslint-disable-next-line camelcase
+  const replyOptions = { reply_to_message_id: ctx.message.message_id };
+
+
+  if (!input) {
+    if (ctx.message.reply_to_message) {
+      ctx.replyWithPhoto('https://latex.univie.ac.at/?' + ctx.message.reply_to_message.text);
+    } else {
+      ctx.reply(
+          'Уведи запит після команди або ' +
+          'відправ команду у відповідь на повідомлення',
+          replyOptions
+      );
+    }
+  } else {
+    ctx.replyWithPhoto('https://latex.univie.ac.at/?' + input);
+  }
+
+});
+
 bot.launch().then(() => console.log('Bot has successfully started!'));
