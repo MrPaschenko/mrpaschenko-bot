@@ -261,7 +261,7 @@ bot.command('latex', ctx => {
 
   if (!input) {
     if (ctx.message.reply_to_message) {
-      ctx.replyWithPhoto('https://math.now.sh?from=' + ctx.message.reply_to_message.text);
+      ctx.replyWithPhoto('https://math.vercel.app/?from=' + ctx.message.reply_to_message.text);
     } else {
       ctx.reply(
           'Уведи запит після команди або ' +
@@ -270,7 +270,7 @@ bot.command('latex', ctx => {
       );
     }
   } else {
-    ctx.replyWithPhoto('https://math.now.sh?from=' + input);
+    ctx.replyWithPhoto('https://math.vercel.app/?from=' + input);
   }
 
 });
