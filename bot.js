@@ -258,10 +258,9 @@ bot.command('latex', ctx => {
   // eslint-disable-next-line camelcase
   const replyOptions = { reply_to_message_id: ctx.message.message_id };
 
-
   if (!input) {
     if (ctx.message.reply_to_message) {
-      ctx.replyWithPhoto('https://math.vercel.app/?from=' + ctx.message.reply_to_message.text);
+      ctx.replyWithPhoto(`http://latex.codecogs.com/png.latex?%5Cdpi%7B300%7D%20%5Cbg_white%20${input}`, replyOptions);
     } else {
       ctx.reply(
           'Уведи запит після команди або ' +
@@ -270,7 +269,7 @@ bot.command('latex', ctx => {
       );
     }
   } else {
-    ctx.replyWithPhoto('https://math.vercel.app/?from=' + input);
+    ctx.replyWithPhoto(`http://latex.codecogs.com/png.latex?%5Cdpi%7B300%7D%20%5Cbg_white%20${input}`, replyOptions);
   }
 
 });
