@@ -1,6 +1,6 @@
 'use strict';
 
-require('dotenv').config();
+// require('dotenv').config();
 
 const WolframAlphaAPI = require('@wolfram-alpha/wolfram-alpha-api');
 const waApi = new WolframAlphaAPI(process.env.WOLFRAM);

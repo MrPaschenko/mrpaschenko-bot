@@ -5,7 +5,7 @@ const { ud } = require('./ud');
 const { od, odAudio } = require('./od');
 const { Telegraf } = require('telegraf');
 
-require('dotenv').config();
+// require('dotenv').config();
 
 const bot = new Telegraf(process.env.TOKEN);
 

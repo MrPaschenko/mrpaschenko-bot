@@ -2,7 +2,7 @@
 
 const https = require('https');
 
-require('dotenv').config();
+// require('dotenv').config();
 
 function od(request, callback) {
   const options = {
