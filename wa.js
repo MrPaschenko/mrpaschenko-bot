@@ -2,8 +2,9 @@
 
 require('dotenv').config();
 
-const WolframAlphaAPI = require('wolfram-alpha-api');
+const WolframAlphaAPI = require('@wolfram-alpha/wolfram-alpha-api');
 const waApi = new WolframAlphaAPI(process.env.WOLFRAM);
+
 async function wa(input) {
   const response = {
     text: '',
