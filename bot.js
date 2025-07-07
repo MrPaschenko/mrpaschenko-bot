@@ -20,8 +20,7 @@ bot.help(ctx => {
     '/ud - Запит Urban Dictionary\n' +
     '/od - Запит Oxford Dictionary\n' +
     '/od_audio - Озвучка слова звідти ж\n' +
-    '/help - Список команд\n' +
-    '/donate - Підтримати автора\n');
+    '/help - Список команд\n');
 });
 
 bot.command('wa', async ctx => {
@@ -202,15 +201,6 @@ bot.command('send', ctx => {
       ctx.reply('Надіслано');
     });
   }
-});
-
-bot.command('donate', ctx => {
-  // eslint-disable-next-line camelcase
-  const replyOptions = { reply_to_message_id: ctx.message.message_id };
-
-  const url = 'https://send.monobank.ua/jar/A6zJ34EjH5';
-
-  ctx.reply('Буду вдячний за копійку 🙃\n' + url, replyOptions);
 });
 
 bot.command('thispersondoesnotexist', ctx => {
