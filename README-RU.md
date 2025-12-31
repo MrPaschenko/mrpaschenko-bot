@@ -39,14 +39,4 @@ $ npm start
 /ud <request>
 ```
 
-### Определение слова от [Oxford Dictionary](https://www.oxfordlearnersdictionaries.com/)
-```
-/od <request>
-```
-
-### Произношение от [Oxford Dictionary](https://www.oxfordlearnersdictionaries.com/)
-```
-/od_audio <request>
-```
-
 _Ты так же можешь выполнить запрос, отвечая командой на другое сообщениe_

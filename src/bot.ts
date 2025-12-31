@@ -6,8 +6,6 @@ import {
   waCommand,
   waFullCommand,
   udCommand,
-  odCommand,
-  odAudioCommand,
   sendCommand,
   thisPersonDoesNotExistCommand,
   thisCatDoesNotExistCommand,
@@ -25,8 +23,6 @@ bot.command('help', helpCommand);
 bot.command('wa', waCommand);
 bot.command('wa_full', waFullCommand);
 bot.command('ud', udCommand);
-bot.command('od', odCommand);
-bot.command('od_audio', odAudioCommand);
 bot.command('send', sendCommand);
 bot.command('thispersondoesnotexist', thisPersonDoesNotExistCommand);
 bot.command('thiscatdoesnotexist', thisCatDoesNotExistCommand);

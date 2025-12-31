@@ -44,14 +44,4 @@ $ npm start
 /ud <request>
 ```
 
-### Word definition from [Oxford Dictionary](https://www.oxfordlearnersdictionaries.com/)
-```
-/od <request>
-```
-
-### Pronunciation from [Oxford Dictionary](https://www.oxfordlearnersdictionaries.com/)
-```
-/od_audio <request>
-```
-
 >You can also make any request by replying to other message
