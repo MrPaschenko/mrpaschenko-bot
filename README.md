@@ -8,39 +8,42 @@
 1. Install all necessary packages
 
 ```bash
-$ npm install
+npm install
 ```
 
-2. Set up a configuration file
+1. Set up a configuration file
 
 Configuration file should be named as `.env`, example is named as `.env.example`
 
-3. Run
+1. Run
 
 ```bash
-$ node bot.js
+node bot.js
 ```
 
 or
 
 ```bash
-$ npm start
+npm start
 ```
 
 ## Available commands
 
 ### Request to [Wolfram|Alpha](https://www.wolframalpha.com/) with simple answer
-```
+
+```txt
 /wa <request>
 ```
 
 ### Same, but full answer with picture
-```
+
+```txt
 /wa_full <request>
 ```
 
 ### Word definition from [Urban Dictionary](https://www.urbandictionary.com/)
-```
+
+```txt
 /ud <request>
 ```
 
