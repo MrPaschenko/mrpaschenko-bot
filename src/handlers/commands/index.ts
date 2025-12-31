@@ -1,0 +1,13 @@
+export { startCommand } from './start';
+export { helpCommand } from './help';
+export { waCommand } from './wa';
+export { waFullCommand } from './waFull';
+export { udCommand } from './ud';
+export { odCommand } from './od';
+export { odAudioCommand } from './odAudio';
+export { sendCommand } from './send';
+export { thisPersonDoesNotExistCommand } from './thisPersonDoesNotExist';
+export { thisCatDoesNotExistCommand } from './thisCatDoesNotExist';
+export { thisWaifuDoesNotExistCommand } from './thisWaifuDoesNotExist';
+export { pingCommand } from './ping';
+export { latexCommand } from './latex';
