@@ -29,9 +29,11 @@ function ud(request: string, callback: Callback): void {
         callback(new Error(response));
       } else {
         response = '*Визначення:*\n' +
-          `${parsed.list[0].definition}\n` +
-          '\n*Приклад використання:*\n' +
-          `${parsed.list[0].example}`;
+          `${parsed.list[0].definition}`;
+        if (parsed.list[0].example) {
+          response += '\n\n*Приклад використання:*\n' +
+            `${parsed.list[0].example}`;
+        }
         callback(null, response);
       }
     });
