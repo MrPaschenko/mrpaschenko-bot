@@ -2,15 +2,15 @@
   "name": "mrpaschenko-bot",
   "version": "1.0.0",
   "dependencies": {
-    "@wolfram-alpha/wolfram-alpha-api": "^23.1004.144821-RELEASE",
-    "dotenv": "^16.4.7",
-    "grammy": "^1.39.0"
+    "@wolfram-alpha/wolfram-alpha-api": "*",
+    "dotenv": "*",
+    "grammy": "*"
   },
   "devDependencies": {
-    "@types/node": "^25.0.3",
-    "eslint": "^9.19.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.9.3"
+    "@types/node": "*",
+    "eslint": "*",
+    "ts-node": "*",
+    "typescript": "*"
   },
   "scripts": {
     "build": "tsc",
